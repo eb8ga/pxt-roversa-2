@@ -1,7 +1,7 @@
 /**
  * Blocks for driving the Kitronik Servo:Lite Board
  */
-//% weight=100 color=#00A654 icon="\uf1b9" block="Servo:Lite"
+//% weight=100 color=#00A654 icon="\uf1b9" block="Roversa"
 namespace kitronik_servo_lite {
     /**
      * **********************************************************************************************************************************************
