@@ -1,8 +1,6 @@
-# Kitronik blocks for micro:bit
+# Roversa blocks for micro:bit
 
-Blocks that support [Kitronik Servo:Lite board for the micro:bit](https://www.kitronik.co.uk/5623)
-
-## ServoLite
+## Roversa
 
 * turn around ``A``
 ```blocks
