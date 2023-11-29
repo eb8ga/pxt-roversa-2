@@ -1,7 +1,7 @@
 {
-    "name": "pxt-kitronik-servo-lite",
-    "version": "1.0.9",
-    "description": "Blocks to simplify using Kitronik Servo:Lite board in PXT",
+    "name": "roversa",
+    "version": "1.0.0",
+    "description": "Blocks to simplify using Roversa in PXT",
     "license": "MIT",
     "dependencies": {
         "core": "*"
