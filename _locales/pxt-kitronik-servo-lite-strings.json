@@ -12,6 +12,6 @@
   "kitronik_servo_lite.stop|block": "stop",
   "kitronik_servo_lite.turnLeft|block": "turn left %deg|degrees",
   "kitronik_servo_lite.turnRight|block": "turn right %deg|degrees",
-  "kitronik_servo_lite|block": "Servo:Lite",
+  "kitronik_servo_lite|block": "Roversa",
   "{id:category}Kitronik_servo_lite": "Kitronik_servo_lite"
 }
