@@ -1,5 +1,5 @@
 {
-    "name": "roversa",
+    "name": "pxt-kitronik-servo-lite",
     "version": "1.0.0",
     "description": "Blocks to simplify using Roversa in PXT",
     "license": "MIT",
