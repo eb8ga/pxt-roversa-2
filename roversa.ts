@@ -1,5 +1,5 @@
 /**
- * Blocks for driving the Kitronik Servo:Lite Board
+ * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#00A654 icon="\uf1b9" block="Roversa"
 namespace kitronik_servo_lite {
