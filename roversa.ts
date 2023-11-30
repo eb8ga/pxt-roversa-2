@@ -1,4 +1,40 @@
 /**
+ * The pins used by SparkFun gamer:bit
+ */
+//%
+enum GamerBitPin {
+    //% block="P0 (D-PAD up)"
+    P0 = DAL.MICROBIT_ID_IO_P0,
+    //% block="P1 (D-PAD left)"
+    P1 = DAL.MICROBIT_ID_IO_P1,
+    //% block="P2 (D-PAD right)"
+    P2 = DAL.MICROBIT_ID_IO_P2,
+    //% block="P8 (D-PAD down)"
+    P8 = DAL.MICROBIT_ID_IO_P8,
+    //% block="P12 (Y button)"
+    P12 = DAL.MICROBIT_ID_IO_P12,
+    //% block="P16 (X button)"
+    P16 = DAL.MICROBIT_ID_IO_P16,
+    //% block="P5 (A button)"
+    P5 = DAL.MICROBIT_ID_IO_P5,
+    //% block="P11 (B button)"
+    P11 = DAL.MICROBIT_ID_IO_P11,
+}
+
+/**
+ * The event raised by the SparkFun gamer:bit pins
+ */
+//%
+enum GamerBitEvent {
+    //% block="down"
+    Down = DAL.MICROBIT_BUTTON_EVT_DOWN,
+    //% block="up"
+    Up = DAL.MICROBIT_BUTTON_EVT_UP,
+    //% block="click"
+    Click = DAL.MICROBIT_BUTTON_EVT_CLICK,
+}
+
+/**
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="\uf085" block="Roversa"
@@ -199,43 +235,6 @@ namespace kitronik_servo_lite {
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
     }
-
-
-/**
- * The pins used by SparkFun gamer:bit
- */
-//%
-enum GamerBitPin {
-    //% block="P0 (D-PAD up)"
-    P0 = DAL.MICROBIT_ID_IO_P0,
-    //% block="P1 (D-PAD left)"
-    P1 = DAL.MICROBIT_ID_IO_P1,
-    //% block="P2 (D-PAD right)"
-    P2 = DAL.MICROBIT_ID_IO_P2,
-    //% block="P8 (D-PAD down)"
-    P8 = DAL.MICROBIT_ID_IO_P8,
-    //% block="P12 (Y button)"
-    P12 = DAL.MICROBIT_ID_IO_P12,
-    //% block="P16 (X button)"
-    P16 = DAL.MICROBIT_ID_IO_P16,
-    //% block="P5 (A button)"
-    P5 = DAL.MICROBIT_ID_IO_P5,
-    //% block="P11 (B button)"
-    P11 = DAL.MICROBIT_ID_IO_P11,
-}
-
-/**
- * The event raised by the SparkFun gamer:bit pins
- */
-//%
-enum GamerBitEvent {
-    //% block="down"
-    Down = DAL.MICROBIT_BUTTON_EVT_DOWN,
-    //% block="up"
-    Up = DAL.MICROBIT_BUTTON_EVT_UP,
-    //% block="click"
-    Click = DAL.MICROBIT_BUTTON_EVT_CLICK,
-}
 
 	/**
 	 * Determines if a button is pressed
