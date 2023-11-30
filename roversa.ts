@@ -62,7 +62,7 @@ namespace kitronik_servo_lite {
 	 */
     //% weight=89
     //% blockId=kitronik_servolite_ispressed block="Roversa button %button|is pressed"
-    //% group="Buttons" weight=62
+    //% group="Buttons" weight=91
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
     export function isPressed(button: RoversaPin): boolean {
         const pin = <DigitalPin><number>button;
@@ -87,6 +87,7 @@ namespace kitronik_servo_lite {
      * @param bias eg: 50
      */
     //% blockId=kitronik_servolite_servos_bias
+    //% group="Buttons" weight=88
     //% block="bias %biasDriving"
     //% bias.min=0 bias.max=100
     export function biasDriving(bias:number): void {
