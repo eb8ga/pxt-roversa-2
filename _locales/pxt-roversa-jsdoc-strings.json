@@ -1,5 +1,5 @@
 {
-  "roversa": "Blocks for driving the Kitronik Servo:Lite Board",
+  "roversa": "Blocks for driving the Roversa robot",
   "roversa.backward": "Drives backwards. Call stop to stop",
   "roversa.biasDriving": "Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.",
   "roversa.biasDriving|param|bias": "eg: 50",
