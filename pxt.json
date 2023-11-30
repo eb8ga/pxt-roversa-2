@@ -9,9 +9,7 @@
     "files": [
         "README.md",
         "roversa-buttons.cpp",
-        "roversa.ts",
-        "_locales/pxt-roversa-jsdoc-strings.json",
-        "_locales/pxt-roversa-strings.json"
+        "roversa.ts"
     ],
     "testFiles": [
         "tests.ts"
