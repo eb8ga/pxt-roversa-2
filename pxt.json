@@ -10,8 +10,8 @@
         "README.md",
         "roversa-buttons.cpp",
         "roversa.ts",
-        "_locales/hu/pxt-roversa-jsdoc-strings.json",
-        "_locales/hu/pxt-roversa-strings.json"
+        "_locales/pxt-roversa-jsdoc-strings.json",
+        "_locales/pxt-roversa-strings.json"
     ],
     "testFiles": [
         "tests.ts"
