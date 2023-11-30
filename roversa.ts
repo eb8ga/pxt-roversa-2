@@ -237,7 +237,7 @@ namespace kitronik_servo_lite {
 	/**
 	 * 
 	 */
-    //% shim=gamerbit::init
+    //% shim=kitronik_servolite::init
     function init(): void {
         return;
     }
@@ -246,7 +246,7 @@ namespace kitronik_servo_lite {
 	 * @param button the pin that acts as a button
 	 */
     //% weight=89
-    //% blockId=kitronik_servolite_ispressed block="gamer:bit %button|is pressed"
+    //% blockId=kitronik_servolite_ispressed block="Roversa button %button|is pressed"
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
     export function isPressed(button: RoversaPin): boolean {
         const pin = <DigitalPin><number>button;
@@ -255,10 +255,10 @@ namespace kitronik_servo_lite {
     }
 
 	/**
-	 * Registers code to run when a gamer:bit event is detected.
+	 * Registers code to run when a Roversa button is detected.
 	 */
     //% weight=90
-    //% blockId=kitronik_servolite_onevent block="gamer:bit on %button|%event"
+    //% blockId=kitronik_servolite_onevent block="Roversa button on %button|%event"
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
     //% event.fieldEditor="gridpicker" event.fieldOptions.columns=3
     export function onEvent(button: RoversaPin, event: RoversaEvent, handler: Action) {
