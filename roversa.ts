@@ -2,7 +2,7 @@
  * The pins used by Roversa
  */
 //%
-enum GamerBitPin {
+enum RoversaPin {
     //% block="P5 (ENTER)"
     P5 = DAL.MICROBIT_ID_IO_P5,
     //% block="P8 (PLAY)"
@@ -23,7 +23,7 @@ enum GamerBitPin {
  * The event raised by the Roversa pins
  */
 //%
-enum GamerBitEvent {
+enum RoversaEvent {
     //% block="down"
     Down = DAL.MICROBIT_BUTTON_EVT_DOWN,
     //% block="up"
@@ -248,7 +248,7 @@ namespace kitronik_servo_lite {
     //% weight=89
     //% blockId=kitronik_servolite_ispressed block="gamer:bit %button|is pressed"
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
-    export function isPressed(button: GamerBitPin): boolean {
+    export function isPressed(button: RoversaPin): boolean {
         const pin = <DigitalPin><number>button;
         pins.setPull(pin, PinPullMode.PullUp);
         return pins.digitalReadPin(<DigitalPin><number>button) == 0;
@@ -261,7 +261,7 @@ namespace kitronik_servo_lite {
     //% blockId=kitronik_servolite_onevent block="gamer:bit on %button|%event"
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
     //% event.fieldEditor="gridpicker" event.fieldOptions.columns=3
-    export function onEvent(button: GamerBitPin, event: GamerBitEvent, handler: Action) {
+    export function onEvent(button: RoversaPin, event: RoversaEvent, handler: Action) {
         init();
         control.onEvent(<number>button, <number>event, handler); // register handler
     }
