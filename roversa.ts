@@ -199,7 +199,7 @@ namespace kitronik_servo_lite {
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
     }
-}
+
 
 /**
  * The pins used by SparkFun gamer:bit
@@ -236,19 +236,6 @@ enum GamerBitEvent {
     //% block="click"
     Click = DAL.MICROBIT_BUTTON_EVT_CLICK,
 }
-
-/**
- * Functions to operate the SparkFun gamer:bit
- */
-//% color=#f44242 icon="\uf11b"
-namespace gamerbit {
-	/**
-	 * 
-	 */
-    //% shim=gamerbit::init
-    function init(): void {
-        return;
-    }
 
 	/**
 	 * Determines if a button is pressed
