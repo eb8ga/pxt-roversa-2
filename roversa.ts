@@ -1,7 +1,7 @@
 /**
  * Blocks for driving the Roversa robot
  */
-//% weight=100 color=#d55e00 icon="\f085" block="Roversa"
+//% weight=100 color=#d55e00 icon="\uf085" block="Roversa"
 namespace kitronik_servo_lite {
     /**
      * **********************************************************************************************************************************************
