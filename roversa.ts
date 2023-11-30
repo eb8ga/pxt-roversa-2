@@ -241,6 +241,7 @@ namespace kitronik_servo_lite {
     function init(): void {
         return;
     }
+	
 	/**
 	 * Determines if a button is pressed
 	 * @param button the pin that acts as a button
