@@ -20,10 +20,9 @@
   "kitronik_servo_lite.turnLeft|param|deg": "how far to turn, eg: 90",
   "kitronik_servo_lite.turnRight": "Turns right through the requested degrees and then stops\r\nneeds NumberOfDegreesPerSec tuned to make accurate, as it uses\r\na simple turn, wait, stop method.\r\nRuns the servos at slower than the right function to reduce wheel slip",
   "kitronik_servo_lite.turnRight|param|deg": "how far to turn, eg: 90",
-  "GamerBitEvent": "The event raised by the SparkFun gamer:bit pins",
-  "GamerBitPin": "The pins used by SparkFun gamer:bit",
-  "gamerbit": "Functions to operate the SparkFun gamer:bit",
-  "gamerbit.isPressed": "Determines if a button is pressed",
-  "gamerbit.isPressed|param|button": "the pin that acts as a button",
-  "gamerbit.onEvent": "Registers code to run when a gamer:bit event is detected."
+  "RoversatEvent": "The event raised by the SparkFun gamer:bit pins",
+  "RoversaPin": "The pins used by SparkFun gamer:bit",
+  "kitronik_servo_lite.isPressed": "Determines if a button is pressed",
+  "kitronik_servo_lite.isPressed|param|button": "the pin that acts as a button",
+  "kitronik_servo_lite.onEvent": "Registers code to run when a gamer:bit event is detected."
 }
