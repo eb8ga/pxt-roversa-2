@@ -47,7 +47,42 @@ namespace kitronik_servo_lite {
     let distancePerSec = 100
     let numberOfDegreesPerSec = 200
     let biasToApply = 50 //in the middle is the place to start
+	
+	/**
+	 * 
+	 */
+    //% shim=kitronik_servolite::init
+    function init(): void {
+        return;
+    }
+	
+	/**
+	 * Determines if a button is pressed
+	 * @param button the pin that acts as a button
+	 */
+    //% weight=89
+    //% blockId=kitronik_servolite_ispressed block="Roversa button %button|is pressed"
+    //% group="Buttons" weight=62
+    //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
+    export function isPressed(button: RoversaPin): boolean {
+        const pin = <DigitalPin><number>button;
+        pins.setPull(pin, PinPullMode.PullUp);
+        return pins.digitalReadPin(<DigitalPin><number>button) == 0;
+    }
 
+	/**
+	 * Registers code to run when a Roversa button is detected.
+	 */
+    //% weight=90
+    //% blockId=kitronik_servolite_onevent block="Roversa button on %button|%event"
+    //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
+    //% event.fieldEditor="gridpicker" event.fieldOptions.columns=3
+    export function onEvent(button: RoversaPin, event: RoversaEvent, handler: Action) {
+        init();
+        control.onEvent(<number>button, <number>event, handler); // register handler
+    }
+
+	
     /**
      * Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.
      * @param bias eg: 50
@@ -232,38 +267,5 @@ namespace kitronik_servo_lite {
     //% block="calibrate drive amount to %distPerSec|mm per second"
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
-    }
-	
-	/**
-	 * 
-	 */
-    //% shim=kitronik_servolite::init
-    function init(): void {
-        return;
-    }
-	
-	/**
-	 * Determines if a button is pressed
-	 * @param button the pin that acts as a button
-	 */
-    //% weight=89
-    //% blockId=kitronik_servolite_ispressed block="Roversa button %button|is pressed"
-    //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
-    export function isPressed(button: RoversaPin): boolean {
-        const pin = <DigitalPin><number>button;
-        pins.setPull(pin, PinPullMode.PullUp);
-        return pins.digitalReadPin(<DigitalPin><number>button) == 0;
-    }
-
-	/**
-	 * Registers code to run when a Roversa button is detected.
-	 */
-    //% weight=90
-    //% blockId=kitronik_servolite_onevent block="Roversa button on %button|%event"
-    //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
-    //% event.fieldEditor="gridpicker" event.fieldOptions.columns=3
-    export function onEvent(button: RoversaPin, event: RoversaEvent, handler: Action) {
-        init();
-        control.onEvent(<number>button, <number>event, handler); // register handler
     }
 }
