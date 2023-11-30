@@ -12,8 +12,6 @@
   "kitronik_servo_lite.stop|block": "stop",
   "kitronik_servo_lite.turnLeft|block": "turn left %deg|degrees",
   "kitronik_servo_lite.turnRight|block": "turn right %deg|degrees",
-  "kitronik_servo_lite|block": "Roversa",
-  "{id:category}Kitronik_servo_lite": "Kitronik_servo_lite",
   "GamerBitEvent.Click|block": "click",
   "GamerBitEvent.Down|block": "down",
   "GamerBitEvent.Up|block": "up",
@@ -25,8 +23,8 @@
   "GamerBitPin.P2|block": "P2 (D-PAD right)",
   "GamerBitPin.P5|block": "P5 (A button)",
   "GamerBitPin.P8|block": "P8 (D-PAD down)",
-  "gamerbit.isPressed|block": "gamer:bit %button|is pressed",
-  "gamerbit.onEvent|block": "gamer:bit on %button|%event",
-  "gamerbit|block": "gamerbit",
-  "{id:category}Gamerbit": "Gamerbit"
+  "kitronik_servo_lite.isPressed|block": "gamer:bit %button|is pressed",
+  "kitronik_servo_lite.onEvent|block": "gamer:bit on %button|%event",
+  "kitronik_servo_lite|block": "Roversa",
+  "{id:category}Kitronik_servo_lite": "Kitronik_servo_lite",
 }
