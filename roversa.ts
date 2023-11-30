@@ -60,7 +60,6 @@ namespace roversa {
 	 * Determines if a button is pressed
 	 * @param button the pin that acts as a button
 	 */
-    //% weight=89
     //% blockId=roversa_ispressed block="Roversa button %button|is pressed"
     //% group="Buttons" weight=91
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
@@ -73,8 +72,8 @@ namespace roversa {
 	/**
 	 * Registers code to run when a Roversa button is detected.
 	 */
-    //% weight=90
     //% blockId=roversa_onevent block="Roversa button on %button|%event"
+    //% group="Buttons" weight=90
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
     //% event.fieldEditor="gridpicker" event.fieldOptions.columns=3
     export function onEvent(button: RoversaPin, event: RoversaEvent, handler: Action) {
@@ -87,7 +86,7 @@ namespace roversa {
      * @param bias eg: 50
      */
     //% blockId=roversa_servos_bias
-    //% group="Buttons" weight=88
+    //% group="Calibrate" weight=69
     //% block="bias %biasDriving"
     //% bias.min=0 bias.max=100
     export function biasDriving(bias:number): void {
@@ -103,6 +102,7 @@ namespace roversa {
      * Drives forwards. Call stop to stop
      */
     //% blockId=roversa_servos_forward
+    //% group="Servo" weight=87
     //% block="drive forward"
     export function forward(): void {
         let P1Output = 0;
@@ -124,6 +124,7 @@ namespace roversa {
      * Drives backwards. Call stop to stop
      */
     //% blockId=roversa_servos_backward
+    //% group="Servo" weight=86
     //% block="drive backward"
     export function backward(): void {
         let P1Output = 180;
@@ -145,6 +146,7 @@ namespace roversa {
     * Turns left. Call stop to stop
     */
     //% blockId=roversa_servos_left
+    //% group="Servo" weight=85
     //% block="turn left"
     export function left(): void {
         pins.servoWritePin(AnalogPin.P1, 0);
@@ -155,6 +157,7 @@ namespace roversa {
      * Turns right. Call ``stop`` to stop
      */
     //% blockId=roversa_servos_right
+    //% group="Servo" weight=84
     //% block="turn right"
     export function right(): void {
         pins.servoWritePin(AnalogPin.P1, 180);
@@ -169,6 +172,7 @@ namespace roversa {
      * It will also not provide any holding force.
      */
     //% blockId=roversa_servos_stop
+    //% group="Servo" weight=83
     //% block="stop"
     export function stop(): void {
         pins.analogWritePin(AnalogPin.P1, 0);
@@ -180,6 +184,7 @@ namespace roversa {
      * On a well trimmed 360 this is stationary, on a normal servo this is 90 degrees.
      */
     //% blockId=roversa_servos_neutral
+    //% group="Servo" weight=82
     //% block="goto neutral position"
     export function neutral(): void {
         pins.servoWritePin(AnalogPin.P1, 90);
@@ -191,6 +196,7 @@ namespace roversa {
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_forwards
+    //% group="Servo" weight=81
     //% block="drive forwards %howFar|distance" 
     export function driveForwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
@@ -204,6 +210,7 @@ namespace roversa {
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_backwards
+    //% group="Servo" weight=80
     //% block="drive backwards %howFar|distance" 
     export function driveBackwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
@@ -220,6 +227,7 @@ namespace roversa {
      * @param deg how far to turn, eg: 90
      */
     //% blockId=roversa_turn_right
+    //% group="Servo" weight=79
     //% block="turn right %deg|degrees"
     export function turnRight(deg: number): void {
         let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
@@ -237,6 +245,7 @@ namespace roversa {
     * @param deg how far to turn, eg: 90
     */
     //% blockId=roversa_turn_left
+    //% group="Servo" weight=78
     //% block="turn left %deg|degrees"
     export function turnLeft(deg: number): void {
         let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
@@ -249,9 +258,10 @@ namespace roversa {
     /**
      * Allows the setting of roversa turn amount.
      * This allows tuning for the turn x degrees commands
-     * @param degPerSec : How many degrees per second the mini does.
+     * @param degPerSec : How many degrees per second the robot does.
      */
     //% blockId=roversa_set_turn_speed_param
+    //% group="Calibrate" weight=68
     //% block="calibrate turn amount to %degPerSec|degrees per second" 
     export function setDegreesPerSecond(degPerSec: number): void {
         numberOfDegreesPerSec = degPerSec
@@ -260,9 +270,10 @@ namespace roversa {
     /**
      * Allows the setting of roversa forward / reverse distance.
      * This allows tuning for the move x distance commands
-     * @param distPerSec : How many mm per second the mini does.
+     * @param distPerSec : How many mm per second the robot does.
      */
     //% blockId=roversa_set_movement_speed_param 
+    //% group="Calibrate" weight=68
     //% block="calibrate drive amount to %distPerSec|mm per second"
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
