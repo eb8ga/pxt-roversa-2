@@ -19,6 +19,7 @@ namespace kitronik_servo_lite {
      * @param bias eg: 50
      */
     //% blockId=kitronik_servolite_servos_bias
+    //% group="Servo" weight=62
     //% block="bias %biasDriving"
     //% bias.min=0 bias.max=100
     export function biasDriving(bias:number): void {
