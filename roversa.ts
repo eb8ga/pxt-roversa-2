@@ -1,28 +1,26 @@
 /**
- * The pins used by SparkFun gamer:bit
+ * The pins used by Roversa
  */
 //%
 enum GamerBitPin {
-    //% block="P0 (D-PAD up)"
-    P0 = DAL.MICROBIT_ID_IO_P0,
-    //% block="P1 (D-PAD left)"
-    P1 = DAL.MICROBIT_ID_IO_P1,
-    //% block="P2 (D-PAD right)"
-    P2 = DAL.MICROBIT_ID_IO_P2,
-    //% block="P8 (D-PAD down)"
-    P8 = DAL.MICROBIT_ID_IO_P8,
-    //% block="P12 (Y button)"
-    P12 = DAL.MICROBIT_ID_IO_P12,
-    //% block="P16 (X button)"
-    P16 = DAL.MICROBIT_ID_IO_P16,
-    //% block="P5 (A button)"
+    //% block="P5 (ENTER)"
     P5 = DAL.MICROBIT_ID_IO_P5,
-    //% block="P11 (B button)"
-    P11 = DAL.MICROBIT_ID_IO_P11,
+    //% block="P8 (PLAY)"
+    P8 = DAL.MICROBIT_ID_IO_P8,
+    //% block="P9 (STOP)"
+    P9 = DAL.MICROBIT_ID_IO_P9,
+    //% block="P13 (FORWARD)"
+    P13 = DAL.MICROBIT_ID_IO_P13,
+    //% block="P14 (REVERSE)"
+    P14 = DAL.MICROBIT_ID_IO_P14,
+    //% block="P15 (RIGHT)"
+    P15 = DAL.MICROBIT_ID_IO_P15,
+    //% block="P16 (LEFT)"
+    P16 = DAL.MICROBIT_ID_IO_P16,
 }
 
 /**
- * The event raised by the SparkFun gamer:bit pins
+ * The event raised by the Roversa pins
  */
 //%
 enum GamerBitEvent {
