@@ -31,3 +31,5 @@ MIT
 
 * for PXT/microbit
 (The metadata above is needed for package search.)
+
+More info for Roversa can be found on the [Roversa](https://www.globalcsed.org/tools.html) page at GlobalCSED.
