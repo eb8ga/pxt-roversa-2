@@ -10,7 +10,7 @@
 roversa.isPressed(RoversaPin.P5)
 ```
 
-Roversa button "is pressed" allows users to select any of the 7 buttons mapped to the micro:bit on Roversa. Buttons include FWD, REV, LEFT, RIGHT, STOP, ENTER, PLAY. Users can make these buttons do anything in Blocks and Javascript
+Roversa button `isPressed` allows users to select any of the 7 buttons mapped to the micro:bit on Roversa. Buttons include FWD, REV, LEFT, RIGHT, STOP, ENTER, PLAY. Users can make these buttons do anything in Blocks and Javascript
 
 ```blocks
 roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
