@@ -99,12 +99,12 @@ namespace roversa {
     }
 
     /**
-     * Drives forwards. Call stop to stop
+     * Drives backwards. Call stop to stop
      */
-    //% blockId=roversa_servos_forward
-    //% group="Servo" weight=87
-    //% block="drive forward"
-    export function forward(): void {
+    //% blockId=roversa_servos_backwards
+    //% group="Servo" weight=86
+    //% block="drive backwards"
+    export function backward(): void {
         let P1Output = 0;
         let P2Output = 180;
         
@@ -121,12 +121,12 @@ namespace roversa {
     }
 
     /**
-     * Drives backwards. Call stop to stop
+     * Drives forward. Call stop to stop
      */
-    //% blockId=roversa_servos_backward
-    //% group="Servo" weight=86
-    //% block="drive backward"
-    export function backward(): void {
+    //% blockId=roversa_servos_forward
+    //% group="Servo" weight=87
+    //% block="drive forward"
+    export function forward(): void {
         let P1Output = 180;
         let P2Output = 0;
         
