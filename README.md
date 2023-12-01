@@ -12,7 +12,13 @@ roversa.isPressed(RoversaPin.P5)
 
 Roversa button "is pressed" allows users to select any of the 7 buttons mapped to the micro:bit on Roversa. Buttons include FWD, REV, LEFT, RIGHT, STOP, ENTER, PLAY. Users can make these buttons do anything in Blocks and Javascript
 
-Roversa button "on" allows users to select any of the above buttons and create an event on the button down, up, or click. 
+```blocks
+roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
+    basic.showString("Hello!")
+})
+```
+
+Roversa button "on" allows users to select any of the above buttons and create an event on the button down, up, or click. In the above example when you push the Enter button on Pin 5 the LED display the string "Hello".
 
 ### Calibrate
 Users can use bias to ensure that the servos are moving in a similar fashion. This will allow users to change the left or right motor regardless of trim. 0-50 adjust the left motor, 50-100 adjusts the right motor.
