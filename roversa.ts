@@ -101,9 +101,9 @@ namespace roversa {
     /**
      * Drives backwards. Call stop to stop
      */
-    //% blockId=roversa_servos_backwards
+    //% blockId=roversa_servos_backward
     //% group="Servo" weight=86
-    //% block="drive backwards"
+    //% block="drive backward"
     export function backward(): void {
         let P1Output = 0;
         let P2Output = 180;
