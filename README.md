@@ -1,4 +1,4 @@
-# Roversa blocks for micro:bit
+# Roversa PXT Extension for MakeCode
 
 ## Roversa
 
