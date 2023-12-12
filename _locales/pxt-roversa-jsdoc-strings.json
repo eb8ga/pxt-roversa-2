@@ -20,7 +20,7 @@
   "roversa.turnLeft|param|deg": "how far to turn, eg: 90",
   "roversa.turnRight": "Turns right through the requested degrees and then stops\r\nneeds NumberOfDegreesPerSec tuned to make accurate, as it uses\r\na simple turn, wait, stop method.\r\nRuns the servos at slower than the right function to reduce wheel slip",
   "roversa.turnRight|param|deg": "how far to turn, eg: 90",
-  "RoversatEvent": "The event raised by the roversa pins",
+  "RoversaEvent": "The event raised by the roversa pins",
   "RoversaPin": "The pins used by Roversa",
   "roversa.isPressed": "Determines if a button is pressed",
   "roversa.isPressed|param|button": "the pin that acts as a button",
