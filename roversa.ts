@@ -3,19 +3,19 @@
  */
 //%
 enum RoversaPin {
-    //% block="P5 (ENTER)"
+    //% block="P5 (Enter)"
     P5 = DAL.MICROBIT_ID_IO_P5,
-    //% block="P8 (PLAY)"
+    //% block="P8 (Play)"
     P8 = DAL.MICROBIT_ID_IO_P8,
-    //% block="P9 (STOP)"
+    //% block="P9 (Stop)"
     P9 = DAL.MICROBIT_ID_IO_P9,
-    //% block="P13 (FORWARD)"
+    //% block="P13 (Forward)"
     P13 = DAL.MICROBIT_ID_IO_P13,
-    //% block="P14 (REVERSE)"
+    //% block="P14 (Reverse)"
     P14 = DAL.MICROBIT_ID_IO_P14,
-    //% block="P15 (RIGHT)"
+    //% block="P15 (Right)"
     P15 = DAL.MICROBIT_ID_IO_P15,
-    //% block="P16 (LEFT)"
+    //% block="P16 (Left)"
     P16 = DAL.MICROBIT_ID_IO_P16,
 }
 
@@ -55,11 +55,12 @@ namespace roversa {
     let initialized = false;
     function init() {
         if (initialized) return;
-        pins.pushButton(DigitalPin.P0)
-        pins.pushButton(DigitalPin.P1)
-        pins.pushButton(DigitalPin.P2)
+        pins.pushButton(DigitalPin.P5)
         pins.pushButton(DigitalPin.P8)
-        pins.pushButton(DigitalPin.P12)
+        pins.pushButton(DigitalPin.P9)
+        pins.pushButton(DigitalPin.P13)
+        pins.pushButton(DigitalPin.P14)
+        pins.pushButton(DigitalPin.P15)
         pins.pushButton(DigitalPin.P16)
         initialized = true;
     }
