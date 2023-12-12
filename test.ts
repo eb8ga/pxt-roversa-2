@@ -1,3 +1,5 @@
+// tests go here; this will not be compiled when this package is used as a library
+
 // go right 90 degrees
 input.onButtonPressed(Button.A, () => {
     roversa.turnRight(90);
