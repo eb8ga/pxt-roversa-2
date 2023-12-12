@@ -12,18 +12,18 @@ input.onButtonPressed(Button.AB, () => {
 })
 
 basic.forever(() => {
-    if (gamerbit.isPressed(RoversaPin.P5))
+    if (roversa.isPressed(RoversaPin.P5))
         led.scroll("P5 - Enter");
-    if (gamerbit.isPressed(RoversaPin.P8))
+    if (roversa.isPressed(RoversaPin.P8))
         led.scroll("P8 - Play");
-    if (gamerbit.isPressed(RoversaPin.P9))
+    if (roversa.isPressed(RoversaPin.P9))
         led.scroll("P9 - Stop");
-    if (gamerbit.isPressed(RoversaPin.P13))
+    if (roversa.isPressed(RoversaPin.P13))
         led.scroll("P13 - Forward");
-    if (gamerbit.isPressed(RoversaPin.P14))
+    if (roversa.isPressed(RoversaPin.P14))
         led.scroll("P14 - Reverse");
-    if (gamerbit.isPressed(RoversaPin.P15))
+    if (roversa.isPressed(RoversaPin.P15))
         led.scroll("P15 - Right");
-    if (gamerbit.isPressed(RoversaPin.P16))
+    if (roversa.isPressed(RoversaPin.P16))
         led.scroll("P16 - Left");
 })
