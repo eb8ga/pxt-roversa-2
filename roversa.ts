@@ -52,9 +52,18 @@ namespace roversa {
 	 * 
 	 */
     //% shim=roversa::init
-    function init(): void {
-        return;
+    let initialized = false;
+    function init() {
+        if (initialized) return;
+        pins.pushButton(DigitalPin.P0)
+        pins.pushButton(DigitalPin.P1)
+        pins.pushButton(DigitalPin.P2)
+        pins.pushButton(DigitalPin.P8)
+        pins.pushButton(DigitalPin.P12)
+        pins.pushButton(DigitalPin.P16)
+        initialized = true;
     }
+
 	
 	/**
 	 * Determines if a button is pressed
