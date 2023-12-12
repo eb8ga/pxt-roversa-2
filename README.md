@@ -26,7 +26,7 @@ Roversa button "on" allows users to select any of the above buttons and create a
 ```block
 roversa.biasDriving(50)
 ```
-
+*Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.
 Users can use bias to ensure that the servos are moving in a similar fashion. This will allow users to change the left or right motor regardless of trim. 0-50 adjust the left motor, 50-100 adjusts the right motor.
 
 Users can also adjust the amount of degrees per turn and amount of mm per second when using future function like turning a certain number of degrees or moving a specified distance. This ensures that Roversa is moving exactly as planned.
@@ -34,6 +34,22 @@ Users can also adjust the amount of degrees per turn and amount of mm per second
 ### Servo
 
 Users can drive forward, backward, left and right turns which will only stop by calling the stop. Stop actually stops analog signal to ensure the robot fully stops regardless of bias.
+```block
+roversa.backward()
+```
+*Drives backwards. Call stop to stop
+```block
+roversa.forward()
+```
+*Drives forwards. Call stop to stop
+```block
+roversa.driveBackwards()
+```
+*Drives backwards the requested distance and then stops
+```block
+roversa.driveForwards()
+```
+*Drives forwards the requested distance and then stops
 
 The nuetral position should pause the motors and keep them stationary. 
 
