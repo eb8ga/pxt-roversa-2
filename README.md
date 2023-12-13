@@ -7,12 +7,19 @@ More info for Roversa can be found on the [Roversa](https://www.globalcsed.org/t
 
 ### Buttons
 Pins are matched to the following micro:bit inputs:
+
 ```P5``` = Enter
+
 ```P8``` = Play
+
 ```P9``` = Pause
+
 ```P13``` = Forward
+
 ```P14``` = Reverse
+
 ```P15``` = Right
+
 ```P16``` = Left
 
 Roversa button `isPressed` allows users to select any of the 7 buttons mapped to the micro:bit on Roversa. Buttons include FWD, REV, LEFT, RIGHT, STOP, ENTER, PLAY. Users can make these buttons do anything in Blocks and Javascript
