@@ -31,14 +31,14 @@ roversa.biasDriving(50)
 ```
 *Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.*
 
-Users can also adjust the amount of degrees per turn and amount of mm per second when using future function like turning a certain number of degrees or moving a specified distance. This ensures that Roversa is moving exactly as planned. Use these to coincide with `roversa.turnLeft` and `roversa.turnRight` for turning and `roversa.driveForwards` and `roversa.driveBackwards` to go a straight distance. 
+Users can also adjust the amount of degrees per turn and amount of mm per second when using future function like turning a certain number of degrees or moving a specified distance. This ensures that Roversa is moving exactly as planned. Use these to coincide with `roversa.turnLeft` and `roversa.turnRight` for turning and `roversa.driveForwards` and `roversa.driveBackwards` to go a straight distance. In this example it will turn 2 degrees/s or move 10 mm/s.
 
 ```block
-roversa.setDegreesPerSecond()
+roversa.setDegreesPerSecond(2)
 ```
 *Allows the setting of Roversa turn amount. This allows tuning for the turn x degrees commands*
  ```block
-roversa.setDistancePerSecond()
+roversa.setDistancePerSecond(10)
 ```
 *Allows the setting of Roversa forward / reverse distance. This allows tuning for the move x distance commands*
 
@@ -66,22 +66,22 @@ roversa.neutral()
 ```
 *Sends servos to 'neutral' position.\r\nOn a well trimmed 360 this is stationary, on a normal servo this is 90 degrees*
 
-Users can also select specific distances to drive the robot forward and backwards. This is also similar to selecting specific angles for turning. Be sure to use the calibration before using these last 4 functions to make sure your robot is going the correct distances and angles. 
+Users can also select specific distances to drive the robot forward and backwards. This is also similar to selecting specific angles for turning. Be sure to use the calibration before using these last 4 functions to make sure your robot is going the correct distances and angles. In this example it is driving 10 mm or turning 90 degrees.
 
 ```block
-roversa.driveForwards()
+roversa.driveForwards(10)
 ```
 *Drives forwards the requested distance and then stops*
 ```block
-roversa.driveBackwards()
+roversa.driveBackwards(10)
 ```
 *Drives backwards the requested distance and then stops*
 ```block
-roversa.turnRight()
+roversa.turnRight(90)
 ```
 *Turns right through the requested degrees and then stops, needs NumberOfDegreesPerSec tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the left function to reduce wheel slip*
 ```block
-roversa.turnLeft()
+roversa.turnLeft(90)
 ```
 *Turns left through the requested degrees and then stops, needs NumberOfDegreesPerSec tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the right function to reduce wheel slip*
 
