@@ -61,6 +61,7 @@ gamerbit.onEvent(RoversaPin.P16, RoversaEvent.Up, () => {
     led.unplot(1, 0)
 })
 
+//check each button press to its corresponding pin, led matrix scroll each pin mapping
 basic.forever(() => {
     if (roversa.isPressed(RoversaPin.P5))
         led.scroll("P5 - Enter");
