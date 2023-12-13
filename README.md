@@ -6,6 +6,14 @@ More info for Roversa can be found on the [Roversa](https://www.globalcsed.org/t
 ![roversa v2.1](https://github.com/GlobalCSEd/roversa/blob/main/RAW_PICS/roversa%20v2.2-Getting%20Started%20GuideBCKGND.png?raw=true)
 
 ### Buttons
+Pins are matched to the following micro:bit inputs:
+```P5``` = Enter
+```P8``` = Play
+```P9``` = Pause
+```P13``` = Forward
+```P14``` = Reverse
+```P15``` = Right
+```P16``` = Left
 
 Roversa button `isPressed` allows users to select any of the 7 buttons mapped to the micro:bit on Roversa. Buttons include FWD, REV, LEFT, RIGHT, STOP, ENTER, PLAY. Users can make these buttons do anything in Blocks and Javascript
 
@@ -14,7 +22,7 @@ roversa.isPressed(RoversaPin.P5)
 ```
 *Determines if a button is pressed*
 
-Roversa button "on" allows users to select any of the above buttons and create an event on the button *down*, *up*, or *click*. In the above example when you push the Enter button on Pin 5 the LED display the string "Hello".
+Roversa button on an event allows users to select any of the above buttons and create an event on the button *down*, *up*, or *click*. In the above example when you push the Enter button on Pin 5 the LED display the string "Hello".
 
 ```blocks
 roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
@@ -79,11 +87,11 @@ roversa.driveBackwards(10)
 ```block
 roversa.turnRight(90)
 ```
-*Turns right through the requested degrees and then stops, needs NumberOfDegreesPerSec tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the left function to reduce wheel slip*
+*Turns right through the requested degrees and then stops, needs **NumberOfDegreesPerSec** tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the left function to reduce wheel slip*
 ```block
 roversa.turnLeft(90)
 ```
-*Turns left through the requested degrees and then stops, needs NumberOfDegreesPerSec tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the right function to reduce wheel slip*
+*Turns left through the requested degrees and then stops, needs **NumberOfDegreesPerSec** tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the right function to reduce wheel slip*
 
 ## License
 
