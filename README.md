@@ -22,7 +22,7 @@ roversa.isPressed(RoversaPin.P5)
 ```
 *Determines if a button is pressed*
 
-Roversa button on an event allows users to select any of the above buttons and create an event on the button *down*, *up*, or *click*. In the above example when you push the Enter button on Pin 5 the LED display the string "Hello".
+Roversa button `onEvent` allows users to select any of the above buttons and create an event on the button *down*, *up*, or *click*. In the above example when you push the Enter button on Pin 5 the LED display the string "Hello".
 
 ```blocks
 roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
