@@ -22,8 +22,8 @@
   "RoversaPin.P14|block": "P14 (Reverse)",
   "RoversaPin.P15|block": "P15 (Right)",
   "RoversaPin.P16|block": "P16 (Left)",
-  "roversa.isPressed|block": "gamer:bit %button|is pressed",
-  "roversa.onEvent|block": "gamer:bit on %button|%event",
+  "roversa.isPressed|block": "roversa %button|is pressed",
+  "roversa.onEvent|block": "roversa on %button|%event",
   "roversa|block": "Roversa",
   "{id:category}roversa": "roversa",
 }
