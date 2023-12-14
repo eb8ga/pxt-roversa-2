@@ -1,4 +1,4 @@
-namespace gamerbit {
+namespace roversa {
       let initialized = false;
       function init() {
         if (initialized) return;
