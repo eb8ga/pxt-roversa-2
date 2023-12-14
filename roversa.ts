@@ -48,10 +48,6 @@ namespace roversa {
     let numberOfDegreesPerSec = 200
     let biasToApply = 50 //in the middle is the place to start
 	
-	/**
-	 * 
-	 */
-    //% shim=roversa::init
     let initialized = false;
     function init() {
         if (initialized) return;
