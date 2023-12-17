@@ -1,6 +1,6 @@
 {
     "name": "roversa",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Blocks to simplify using Roversa in PXT",
     "license": "MIT",
     "dependencies": {
