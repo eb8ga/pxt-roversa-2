@@ -9,6 +9,8 @@
     "files": [
         "README.md",
         "roversa-buttons.cpp",
+        "shims.d.ts",
+        "enums.d.ts",
         "roversa.ts"
     ],
     "testFiles": [
