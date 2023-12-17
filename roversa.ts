@@ -51,7 +51,7 @@ namespace roversa {
 	/**
 	 * 
 	 */
-    //% shim=gamerbit::init
+    //% shim=roversa::init
     function init(): void {
         return;
     }
