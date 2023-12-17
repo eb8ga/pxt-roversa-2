@@ -8,10 +8,8 @@
     },
     "files": [
         "README.md",
-        "roversa-buttons.cpp",
-        "roversa.ts",
-        "shims.d.ts",
-        "enums.d.ts"
+        "roversa-buttons.ts",
+        "roversa.ts"
     ],
     "testFiles": [
         "test.ts"
