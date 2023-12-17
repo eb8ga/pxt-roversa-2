@@ -51,7 +51,6 @@ namespace roversa {
 	/**
 	 * 
 	 */
-    //% shim=roversa::init
     function init(): void {
         return;
     }
