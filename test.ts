@@ -15,49 +15,49 @@ input.onButtonPressed(Button.AB, () => {
 roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, () => {
     led.plot(4, 2)
 })
-gamerbit.onEvent(RoversaPin.P5, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P5, RoversaEvent.Up, () => {
     led.unplot(4, 2)
 })
 
 roversa.onEvent(RoversaPin.P8, RoversaEvent.Down, () => {
     led.plot(4, 4)
 })
-gamerbit.onEvent(RoversaPin.P8, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P8, RoversaEvent.Up, () => {
     led.unplot(4, 4)
 })
 
 roversa.onEvent(RoversaPin.P9, RoversaEvent.Down, () => {
     led.plot(4, 0)
 })
-gamerbit.onEvent(RoversaPin.P9, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P9, RoversaEvent.Up, () => {
     led.unplot(4, 0)
 })
 
 roversa.onEvent(RoversaPin.P13, RoversaEvent.Down, () => {
     led.plot(0, 2)
 })
-gamerbit.onEvent(RoversaPin.P13, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P13, RoversaEvent.Up, () => {
     led.unplot(0, 2)
 })
 
 roversa.onEvent(RoversaPin.P14, RoversaEvent.Down, () => {
     led.plot(2, 2)
 })
-gamerbit.onEvent(RoversaPin.P14, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P14, RoversaEvent.Up, () => {
     led.unplot(2, 2)
 })
 
 roversa.onEvent(RoversaPin.P15, RoversaEvent.Down, () => {
     led.plot(1, 4)
 })
-gamerbit.onEvent(RoversaPin.P15, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P15, RoversaEvent.Up, () => {
     led.unplot(1, 4)
 })
 
 roversa.onEvent(RoversaPin.P16, RoversaEvent.Down, () => {
     led.plot(1, 0)
 })
-gamerbit.onEvent(RoversaPin.P16, RoversaEvent.Up, () => {
+roversa.onEvent(RoversaPin.P16, RoversaEvent.Up, () => {
     led.unplot(1, 0)
 })
 
