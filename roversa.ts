@@ -111,7 +111,6 @@ namespace roversa {
      * Drives backwards. Call stop to stop
      */
     //% blockId=roversa_servos_backward
-    //% parts=microservo trackArgs=0
     //% group="Servo" weight=86
     //% block="drive backward"
     export function backward(): void {
@@ -125,8 +124,6 @@ namespace roversa {
             // Want to move 0 towards 90
             P1Output += biasToApply - 50;
         }
-	pins.servoSetContinuous(AnalogPin.P1,true);
-	pins.servoSetContinuous(AnalogPin.P2,true);
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
     }
