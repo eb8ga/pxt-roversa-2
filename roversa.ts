@@ -63,7 +63,7 @@ namespace roversa {
         pins.pushButton(DigitalPin.P16)
         initialized = true;
     }
-}
+
 
 	/**
 	 * Determines if a button is pressed
