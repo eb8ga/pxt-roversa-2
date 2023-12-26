@@ -125,7 +125,8 @@ namespace roversa {
             // Want to move 0 towards 90
             P1Output += biasToApply - 50;
         }
-	pins.servoSetContinuous(true);
+	pins.servoSetContinuous(AnalogPin.P1,true);
+	pins.servoSetContinuous(AnalogPin.P2,true);
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
     }
