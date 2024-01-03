@@ -3,19 +3,19 @@
  */
 //%
 enum RoversaPin {
-    //% block="P5 (Enter)"
+    //% block="Enter"
     P5 = DAL.MICROBIT_ID_IO_P5,
-    //% block="P8 (Play)"
+    //% block="Play"
     P8 = DAL.MICROBIT_ID_IO_P8,
-    //% block="P9 (Stop)"
+    //% block="Stop"
     P9 = DAL.MICROBIT_ID_IO_P9,
-    //% block="P13 (Forward)"
+    //% block="Forward"
     P13 = DAL.MICROBIT_ID_IO_P13,
-    //% block="P14 (Reverse)"
+    //% block="Reverse"
     P14 = DAL.MICROBIT_ID_IO_P14,
-    //% block="P15 (Right)"
+    //% block="Right Turn"
     P15 = DAL.MICROBIT_ID_IO_P15,
-    //% block="P16 (Left)"
+    //% block="Left Turn"
     P16 = DAL.MICROBIT_ID_IO_P16,
 }
 
