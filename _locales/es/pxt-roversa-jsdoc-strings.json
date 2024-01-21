@@ -12,7 +12,7 @@
   "roversa.neutral": "Los servos entran en posición 'neutral' .\r\nOn",
   "roversa.derecha": "Gira a la derecha. Llama a ``parar` para detenerse",
   "roversa.configuraGradosPorSegundo": "Permite ajustar la cantidad de giros de Roversa.\r\n Esto permite calibrar el giro x grados",
-  "roversa.configuraGradosPorSegundo|param|gradPorSeg ": "Cuántos grados por segundo hace el mini.",
+  "roversa.configuraGradosPorSegundo|param|gradPorSeg ": "Cuántos grados por segundo hace Roversa.",
   "roversa.configuraDistanciaPorSegundo": "Permite que ajustar el mini hacia adelante / distancia de reversa.\r\nEsto permite girar ajustar los comandos de desplazamiento x distancia",
   "roversa.setDistancePerSecond|param|distPerSec": ": Cuántos mm por segundos hace Roversa.",
   "roversa.stop": "Detiene los servos 360.\r\nen lugar de escribir 90, que puede no detener el movimiento del servo si está fuera de ajuste\r\nesto detiene el envío de pulsos de servo, que tiene el mismo efecto.\r\nEn un servo normal, esto detendrá el servo donde está, en lugar de devolverlo a la posición neutral.",
