@@ -1,9 +1,9 @@
 # Roversa PXT Extension for MakeCode
-More info for Roversa can be found on the [Roversa](https://www.globalcsed.org/tools.html) page at GlobalCSED.
+More info for Roversa can be found on [roversa.com](https://www.roversa.com) or on the [Roversa](https://www.globalcsed.org/tools.html) page at GlobalCSED.
 
 ## Roversa
 
-![roversa v2.1](https://github.com/GlobalCSEd/roversa/blob/main/RAW_PICS/roversa%20v2.2-Getting%20Started%20GuideBCKGND.png?raw=true)
+![roversa v2.1.1](https://github.com/eb8ga/roversa2/blob/main/github/pics/CADView.png?raw=true)
 
 ### Buttons
 Pins are matched to the following micro:bit inputs:
