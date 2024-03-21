@@ -3,7 +3,7 @@
  */
 //%
 enum RoversaPin {
-    //% block="Enter"
+    //% block="Menu"
     P5 = DAL.MICROBIT_ID_IO_P5,
     //% block="Play"
     P8 = DAL.MICROBIT_ID_IO_P8,
