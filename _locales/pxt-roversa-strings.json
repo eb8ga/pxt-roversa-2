@@ -15,7 +15,7 @@
   "RoversaEvent.Click|block": "click",
   "RoversaEvent.Down|block": "down",
   "RoversaEvent.Up|block": "up",
-  "RoversaPin.P5|block": "Enter",
+  "RoversaPin.P5|block": "Menu",
   "RoversaPin.P8|block": "Play",
   "RoversaPin.P9|block": "Stop",
   "RoversaPin.P13|block": "Forward",
