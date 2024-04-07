@@ -9,8 +9,8 @@
     "files": [
         "README.md",
         "roversa.ts",
-        "_locales/es/pxt-roversa-jsdoc-strings.json",
-        "_locales/es/pxt-roversa-strings.json"
+        "_locales/es-ES/pxt-roversa-jsdoc-strings.json",
+        "_locales/es-ES/pxt-roversa-strings.json"
     ],
     "testFiles": [
         "test.ts"
