@@ -5,7 +5,6 @@
   "roversa.driveForwards|block": "drive forwards %howFar|distance",
   "roversa.forward|block": "drive forward",
   "roversa.left|block": "turn left",
-  "roversa.neutral|block": "goto neutral position",
   "roversa.right|block": "turn right",
   "roversa.setDegreesPerSecond|block": "calibrate turn amount to %degPerSec|degrees per second",
   "roversa.setDistancePerSecond|block": "calibrate drive amount to %distPerSec|mm per second",
