@@ -24,12 +24,12 @@ enum RoversaPin {
  */
 //%
 enum RoversaEvent {
+    //% block="click"
+    Click = DAL.MICROBIT_BUTTON_EVT_CLICK,
     //% block="down"
     Down = DAL.MICROBIT_BUTTON_EVT_DOWN,
     //% block="up"
     Up = DAL.MICROBIT_BUTTON_EVT_UP,
-    //% block="click"
-    Click = DAL.MICROBIT_BUTTON_EVT_CLICK,
 }
 
 /**
@@ -111,7 +111,7 @@ namespace roversa {
      * Drives backwards. Call stop to stop
      */
     //% blockId=roversa_servos_backward
-    //% group="Servo" weight=86
+    //% group="Basic" weight=86
     //% block="drive backward"
     export function backward(): void {
         let P1Output = 0;
@@ -126,13 +126,15 @@ namespace roversa {
         }
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
+	basic.pause(1250);
+        stop();
     }
 
     /**
      * Drives forward. Call stop to stop
      */
     //% blockId=roversa_servos_forward
-    //% group="Servo" weight=87
+    //% group="Basic" weight=87
     //% block="drive forward"
     export function forward(): void {
         let P1Output = 180;
@@ -148,28 +150,34 @@ namespace roversa {
 
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
+	basic.pause(1250);
+        stop();
     }
 
     /**
     * Turns left. Call stop to stop
     */
     //% blockId=roversa_servos_left
-    //% group="Servo" weight=85
+    //% group="Basic" weight=85
     //% block="turn left"
     export function left(): void {
         pins.servoWritePin(AnalogPin.P1, 0);
         pins.servoWritePin(AnalogPin.P2, 0);
+	basic.pause(650);
+        stop();
     }
 
     /**
      * Turns right. Call ``stop`` to stop
      */
     //% blockId=roversa_servos_right
-    //% group="Servo" weight=84
+    //% group="Basic" weight=84
     //% block="turn right"
     export function right(): void {
         pins.servoWritePin(AnalogPin.P1, 180);
         pins.servoWritePin(AnalogPin.P2, 180);
+	basic.pause(650);
+        stop();
     }
 
     /**
@@ -185,18 +193,6 @@ namespace roversa {
     export function stop(): void {
         pins.analogWritePin(AnalogPin.P1, 0);
         pins.analogWritePin(AnalogPin.P2, 0);
-    }
-
-    /**
-     * Sends servos to 'neutral' position.
-     * On a well trimmed 360 this is stationary, on a normal servo this is 90 degrees.
-     */
-    //% blockId=roversa_servos_neutral
-    //% group="Servo" weight=82
-    //% block="goto neutral position"
-    export function neutral(): void {
-        pins.servoWritePin(AnalogPin.P1, 90);
-        pins.servoWritePin(AnalogPin.P2, 90);
     }
 
     /**
