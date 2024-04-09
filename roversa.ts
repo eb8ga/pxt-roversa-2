@@ -188,7 +188,7 @@ namespace roversa {
      * It will also not provide any holding force.
      */
     //% blockId=roversa_servos_stop
-    //% group="Servo" weight=83
+    //% group="Advanced" weight=83
     //% block="stop"
     export function stop(): void {
         pins.analogWritePin(AnalogPin.P1, 0);
@@ -200,7 +200,7 @@ namespace roversa {
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_forwards
-    //% group="Servo" weight=81
+    //% group="Advanced" weight=81
     //% block="drive forwards %howFar|distance" 
     export function driveForwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
@@ -214,7 +214,7 @@ namespace roversa {
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_backwards
-    //% group="Servo" weight=80
+    //% group="Advanced" weight=80
     //% block="drive backwards %howFar|distance" 
     export function driveBackwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
@@ -231,7 +231,7 @@ namespace roversa {
      * @param deg how far to turn, eg: 90
      */
     //% blockId=roversa_turn_right
-    //% group="Servo" weight=79
+    //% group="Advanced" weight=79
     //% block="turn right %deg|degrees"
     export function turnRight(deg: number): void {
         let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
@@ -249,7 +249,7 @@ namespace roversa {
     * @param deg how far to turn, eg: 90
     */
     //% blockId=roversa_turn_left
-    //% group="Servo" weight=78
+    //% group="Advanced" weight=78
     //% block="turn left %deg|degrees"
     export function turnLeft(deg: number): void {
         let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
