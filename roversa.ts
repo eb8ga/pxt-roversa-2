@@ -91,23 +91,6 @@ namespace roversa {
     }
 
     /**
-     * Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.
-     * @param bias eg: 50
-     */
-    //% blockId=roversa_servos_bias
-    //% group="Calibrate" weight=69
-    //% block="bias %biasDriving"
-    //% bias.min=0 bias.max=100
-    export function biasDriving(bias:number): void {
-        if (bias > 100) {
-            bias = 100;
-        } else if (bias < 0) {
-            bias = 0;
-        }
-        biasToApply = bias;
-    }
-
-    /**
      * Drives backwards. Call stop to stop
      */
     //% blockId=roversa_servos_backward
@@ -181,21 +164,6 @@ namespace roversa {
     }
 
     /**
-     * Stop for 360 servos.
-     * rather than write 90, which may not stop the servo moving if it is out of trim
-     * this stops sending servo pulses, which has the same effect.
-     * On a normal servo this will stop the servo where it is, rather than return it to neutral position.
-     * It will also not provide any holding force.
-     */
-    //% blockId=roversa_servos_stop
-    //% group="Advanced" weight=83
-    //% block="stop"
-    export function stop(): void {
-        pins.analogWritePin(AnalogPin.P1, 0);
-        pins.analogWritePin(AnalogPin.P2, 0);
-    }
-
-    /**
      * Drives forwards the requested distance and then stops
      * @param howFar distance to move
      */
@@ -260,6 +228,38 @@ namespace roversa {
     }
 
     /**
+     * Stop for 360 servos.
+     * rather than write 90, which may not stop the servo moving if it is out of trim
+     * this stops sending servo pulses, which has the same effect.
+     * On a normal servo this will stop the servo where it is, rather than return it to neutral position.
+     * It will also not provide any holding force.
+     */
+    //% blockId=roversa_servos_stop
+    //% group="Advanced" weight=77
+    //% block="stop"
+    export function stop(): void {
+        pins.analogWritePin(AnalogPin.P1, 0);
+        pins.analogWritePin(AnalogPin.P2, 0);
+    }
+	
+   /**
+     * Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.
+     * @param bias eg: 50
+     */
+    //% blockId=roversa_servos_bias
+    //% group="Calibrate" weight=69
+    //% block="bias %biasDriving"
+    //% bias.min=0 bias.max=100
+    export function biasDriving(bias:number): void {
+        if (bias > 100) {
+            bias = 100;
+        } else if (bias < 0) {
+            bias = 0;
+        }
+        biasToApply = bias;
+    }
+	
+    /**
      * Allows the setting of roversa turn amount.
      * This allows tuning for the turn x degrees commands
      * @param degPerSec : How many degrees per second the robot does.
@@ -277,7 +277,7 @@ namespace roversa {
      * @param distPerSec : How many mm per second the robot does.
      */
     //% blockId=roversa_set_movement_speed_param 
-    //% group="Calibrate" weight=68
+    //% group="Calibrate" weight=67
     //% block="calibrate drive amount to %distPerSec|mm per second"
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
