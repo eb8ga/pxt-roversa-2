@@ -9,7 +9,6 @@
   "roversa.driveForwards|param|howFar": "distance to move",
   "roversa.forward": "Drives forwards. Call stop to stop",
   "roversa.left": "Turns left. Call stop to stop",
-  "roversa.neutral": "Sends servos to 'neutral' position.\r\nOn a well trimmed 360 this is stationary, on a normal servo this is 90 degrees.",
   "roversa.right": "Turns right. Call ``stop`` to stop",
   "roversa.setDegreesPerSecond": "Allows the setting of roversa turn amount.\r\nThis allows tuning for the turn x degrees commands",
   "roversa.setDegreesPerSecond|param|degPerSec": ": How many degrees per second the robot does.",
