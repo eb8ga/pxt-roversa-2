@@ -9,7 +9,6 @@
   "roversa.driveForwards|param|howFar": "distancia para moverse",
   "roversa.forward": "Conduce adelante. Llama a parar para detenerse",
   "roversa.left": "Gira a la izquuerda. Llama a parar para detenerse",
-  "roversa.neutral": "Los servos entran en posición 'neutral' .\r\nOn",
   "roversa.right": "Gira a la derecha. Llama a ``parar` para detenerse",
   "roversa.setDegreesPerSecond": "Permite ajustar la cantidad de giros de Roversa.\r\n Esto permite calibrar el giro x grados",
   "roversa.setDegreesPerSecond|param|degPerSec": "Cuántos grados por segundo hace Roversa.",
