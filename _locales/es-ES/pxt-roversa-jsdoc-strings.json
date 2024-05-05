@@ -22,6 +22,6 @@
   "RoversaEvent": "El evento indicado por los pines de Roversa",
   "RoversaPin": "Los pines usados por Roversa",
   "roversa.isPressed": "Determina si un botón es presionado",
-  "roversa.isPressed|param|botón": "el pin que actúa como un botón",
+  "roversa.isPressed|param|button": "el pin que actúa como un botón",
   "roversa.onEvent": "Registra el código que va a correr cuando un evento es detectado."
 }
