@@ -151,7 +151,7 @@ namespace roversa {
     }
 
     /**
-     * Turns right. Call ``stop`` to stop
+     * Turns right. Call stop to stop
      */
     //% blockId=roversa_servos_right
     //% group="Basic" weight=84
