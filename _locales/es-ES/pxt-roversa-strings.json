@@ -21,7 +21,7 @@
   "RoversaPin.P14|block": "Reversa",
   "RoversaPin.P15|block": "Derecha",
   "RoversaPin.P16|block": "Izquierda",
-  "roversa.isPressed|block": "roversa %button| es presionado",
+  "roversa.isPressed|block": "roversa %button|es presionado",
   "roversa.onEvent|block": "roversa en %button|%event",
   "roversa|block": "Roversa",
   "{id:category}roversa": "roversa",
