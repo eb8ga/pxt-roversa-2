@@ -9,7 +9,7 @@
   "roversa.driveForwards|param|howFar": "distancia para moverse.",
   "roversa.forward": "Conduce adelante. Llama a parar para detenerse.",
   "roversa.left": "Gira a la izquuerda. Llama a parar para detenerse.",
-  "roversa.right": "Gira a la derecha. Llama a ``parar` para detenerse.",
+  "roversa.right": "Gira a la derecha. Llama a parar para detenerse.",
   "roversa.setDegreesPerSecond": "Permite ajustar la cantidad de giros de Roversa. Esto permite calibrar el giro x grados.",
   "roversa.setDegreesPerSecond|param|degPerSec": "Cuántos grados por segundo hace Roversa.",
   "roversa.setDistancePerSecond": "Permite que ajustar el mini hacia adelante / distancia de reversa. Esto permite girar ajustar los comandos de desplazamiento x distancia.",
