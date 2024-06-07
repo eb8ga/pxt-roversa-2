@@ -1,6 +1,6 @@
 {
     "name": "roversa",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "description": "Blocks to simplify using Roversa in PXT",
     "license": "MIT",
     "dependencies": {
@@ -9,7 +9,6 @@
     "files": [
         "README.md",
         "roversa.ts",
-        "_locales/es-ES/pxt-roversa-jsdoc-strings.json",
         "_locales/es/roversa-strings.json"
     ],
     "testFiles": [
