@@ -10,7 +10,7 @@
         "README.md",
         "roversa.ts",
         "_locales/es-ES/pxt-roversa-jsdoc-strings.json",
-        "_locales/es-ES/pxt-roversa-strings.json"
+        "_locales/es/roversa-strings.json"
     ],
     "testFiles": [
         "test.ts"
