@@ -4,9 +4,9 @@
 //%
 enum RoversaPin {
     //% block="Menu"
-    P5 = DAL.MICROBIT_ID_IO_P5,
+    P5 = DAL.MICROBIT_ID_IO_P8,
     //% block="Play"
-    P8 = DAL.MICROBIT_ID_IO_P8,
+    P8 = DAL.MICROBIT_ID_IO_P5,
     //% block="Stop"
     P9 = DAL.MICROBIT_ID_IO_P9,
     //% block="Forward"
