@@ -8,9 +8,9 @@ More info for Roversa can be found on [roversa.com](https://www.roversa.com) or 
 ### Buttons
 Pins are matched to the following micro:bit inputs:
 
-```P5``` = Menu
+```P8``` = Menu
 
-```P8``` = Play
+```P5``` = Play
 
 ```P9``` = Pause
 
