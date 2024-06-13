@@ -36,7 +36,7 @@ enum RoversaEvent {
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="\uf085" block="Roversa"
-//% groups="['Basic', 'Advanced', 'Calibrate']"
+//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate']"
 namespace roversa {
     /**
      * **********************************************************************************************************************************************
