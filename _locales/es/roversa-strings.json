@@ -27,6 +27,6 @@
   "{id:group}Buttons": "Botones",
   "{id:group}Basic": "Básico",
   "{id:group}Advanced": "Avanzado",
-  "{id:group}Calibration": "Calibrar",
+  "{id:group}Calibrate": "Calibrar",
   "{id:category}roversa": "roversa"
 }
