@@ -24,6 +24,9 @@
   "roversa.isPressed|block": "roversa %button|es presionado",
   "roversa.onEvent|block": "roversa en %button|%event",
   "roversa|block": "Roversa",
-  "roversa|groups": "['Buttons', 'Básico', 'Avanzado', 'Calibrar']",
+  "{id:group}Buttons": "Botones",
+  "{id:group}Basic": "Básico",
+  "{id:group}Advanced": "Avanzado",
+  "{id:group}Calibration": "Calibrar",
   "{id:category}roversa": "roversa"
 }
