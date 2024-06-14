@@ -1,6 +1,6 @@
 {
   "roversa.backward|block": "retroceder",
-  "roversa.biasDriving|block": "Sesgo de Calibración %biasDriving",
+  "roversa.biasDriving|block": "sesgo de calibración %biasDriving",
   "roversa.driveBackwards|block": "moverse atrás %howFar|distancia",
   "roversa.driveForwards|block": "moverse hacia adelante %howFar|distancia",
   "roversa.forward|block": "adelante",
