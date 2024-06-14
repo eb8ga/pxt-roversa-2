@@ -1,7 +1,7 @@
 {
   "roversa": "Bloques para conducir a Roversa.",
   "roversa.backward": "Movimiento hacia atrás. Llama a parar para detener.",
-  "roversa.biasDriving": "Aplicar preferencia a las llantas. 0 a 50 para izquierda, 50 a 100 para derecha.",
+  "roversa.biasDriving": "Sesgo de Calibración - Aplicar preferencia a las llantas. 0 a 50 para izquierda, 50 a 100 para derecha.",
   "roversa.biasDriving|param|bias": "eg: 50",
   "roversa.driveBackwards": "Se dirige hacia atras la distancia indicada y luego se detiene.",
   "roversa.driveBackwards|param|howFar": "distancia de movimiento.",
