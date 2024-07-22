@@ -76,10 +76,6 @@ roversa.right()
 roversa.left()
 ```
 *Turns left. Call stop to stop*
-```block
-roversa.neutral()
-```
-*Sends servos to 'neutral' position.\r\nOn a well trimmed 360 this is stationary, on a normal servo this is 90 degrees*
 
 Users can also select specific distances to drive the robot forward and backwards. This is also similar to selecting specific angles for turning. Be sure to use the calibration before using these last 4 functions to make sure your robot is going the correct distances and angles. In this example it is driving 10 mm or turning 90 degrees.
 
