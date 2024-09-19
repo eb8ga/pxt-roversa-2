@@ -65,7 +65,37 @@ namespace roversa {
         initialized = true;
     }
 
+    function forwardHard(): void {
+        let P1Output = 0;
+        let P2Output = 180;
+        
+        if (biasToApply < 50) {
+            // Want to move 180 towards 90
+            P2Output -= 50 - biasToApply;
+        } else if (biasToApply > 50) {
+            // Want to move 0 towards 90
+            P1Output += biasToApply - 50;
+        }
 
+        pins.servoWritePin(AnalogPin.P1, P1Output);
+        pins.servoWritePin(AnalogPin.P2, P2Output);
+    }
+
+    function backwardHard(): void {
+        let P1Output = 180;
+        let P2Output = 0;
+        
+        if (biasToApply < 50) {
+            // Want to move 0 towards 90
+            P2Output += 50 - biasToApply;
+        } else if (biasToApply > 50) {
+            // Want to move 180 towards 90
+            P1Output -= biasToApply - 50;
+        }
+
+        pins.servoWritePin(AnalogPin.P1, P1Output);
+        pins.servoWritePin(AnalogPin.P2, P2Output);
+    }
 	/**
 	 * Determines if a button is pressed
 	 * @param button the pin that acts as a button
@@ -173,7 +203,7 @@ namespace roversa {
     //% block="drive forwards %howFar|distance" 
     export function driveForwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
-        forward();
+        forwardHard();
         basic.pause(timeToWait);
         stop();
     }
@@ -187,7 +217,7 @@ namespace roversa {
     //% block="drive backwards %howFar|distance" 
     export function driveBackwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
-        backward();
+        backwardHard();
         basic.pause(timeToWait);
         stop();
     }
