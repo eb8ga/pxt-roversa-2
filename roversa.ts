@@ -66,8 +66,8 @@ namespace roversa {
     }
 
     function forwardHard(): void {
-        let P1Output = 0;
-        let P2Output = 180;
+        let P1Output = 180;
+        let P2Output = 0;
         
         if (biasToApply < 50) {
             // Want to move 180 towards 90
@@ -82,8 +82,8 @@ namespace roversa {
     }
 
     function backwardHard(): void {
-        let P1Output = 180;
-        let P2Output = 0;
+        let P1Output = 0;
+        let P2Output = 180;
         
         if (biasToApply < 50) {
             // Want to move 0 towards 90
