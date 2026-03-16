@@ -63,18 +63,19 @@ roversa.onEvent(RoversaPin.P16, RoversaEvent.Up, () => {
 
 //check each button press to its corresponding pin, led matrix scroll each pin mapping
 basic.forever(() => {
+    
     if (roversa.isPressed(RoversaPin.P5))
-        led.scroll("P5 - Enter");
+        basic.showString("P5 - Enter");
     if (roversa.isPressed(RoversaPin.P8))
-        led.scroll("P8 - Play");
+        basic.showString("P8 - Play");
     if (roversa.isPressed(RoversaPin.P9))
-        led.scroll("P9 - Stop");
+        basic.showString("P9 - Stop");
     if (roversa.isPressed(RoversaPin.P13))
-        led.scroll("P13 - Forward");
+        basic.showString("P13 - Forward");
     if (roversa.isPressed(RoversaPin.P14))
-        led.scroll("P14 - Reverse");
+        basic.showString("P14 - Reverse");
     if (roversa.isPressed(RoversaPin.P15))
-        led.scroll("P15 - Right");
+        basic.showString("P15 - Right");
     if (roversa.isPressed(RoversaPin.P16))
-        led.scroll("P16 - Left");
+        basic.showString("P16 - Left");
 })
