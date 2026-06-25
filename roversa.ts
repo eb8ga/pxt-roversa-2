@@ -149,10 +149,13 @@ namespace roversa {
      */
     //% blockId=roversa_servos_forward
     //% group="Basic" weight=87
-    //% block="drive forward"
-    export function forward(): void {
-        let P1Output = 180;
-        let P2Output = 0;
+    //% block="drive forward %value_1 %value_2"
+    //% value_1.min=0 value_1.max=180
+    //% value_2.min=0 value_2.max=180
+    //% value_1.defl=180 value_2.defl=0
+    export function forward(value_1: number, value_2: number): void {
+        let P1Output = value_1;
+        let P2Output = value_2;
         
         if (biasToApply < 50) {
             // Want to move 0 towards 90
