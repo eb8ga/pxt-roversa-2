@@ -33,6 +33,17 @@ enum RoversaEvent {
 }
 
 /**
+ * Which way to nudge the robot when it drifts off a straight line
+ */
+//%
+enum RoversaCorrection {
+    //% block="to the left"
+    Left,
+    //% block="to the right"
+    Right,
+}
+
+/**
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="\uf085" block="Roversa"
@@ -48,6 +59,17 @@ namespace roversa {
     let distancePerSec = 100
     let numberOfDegreesPerSec = 200
     let biasToApply = 50 //in the middle is the place to start
+
+    /* Continuous-rotation servos: 90 is stopped, full speed is +/-90 from neutral.
+       Cap movement at a percentage of full speed for reliable motion on cheap motors. */
+    let speedPercent = 70
+    let fwdHigh = 90 + (90 * speedPercent) / 100 // 153 at 70%
+    let fwdLow = 90 - (90 * speedPercent) / 100  // 27 at 70%
+
+    /* Scale the steering bias offset so it stays proportional at reduced speed */
+    function scaleBias(offset: number): number {
+        return (offset * speedPercent) / 100;
+    }
 
 	/**
 	 * 
@@ -66,15 +88,15 @@ namespace roversa {
     }
 
     function forwardHard(): void {
-        let P1Output = 180;
-        let P2Output = 0;
+        let P1Output = fwdHigh;
+        let P2Output = fwdLow;
         
         if (biasToApply < 50) {
-            // Want to move 180 towards 90
-            P2Output -= 50 - biasToApply;
+            // Want to move fwdHigh towards 90
+            P2Output -= scaleBias(50 - biasToApply);
         } else if (biasToApply > 50) {
-            // Want to move 0 towards 90
-            P1Output += biasToApply - 50;
+            // Want to move fwdLow towards 90
+            P1Output += scaleBias(biasToApply - 50);
         }
 
         pins.servoWritePin(AnalogPin.P1, P1Output);
@@ -82,15 +104,15 @@ namespace roversa {
     }
 
     function backwardHard(): void {
-        let P1Output = 0;
-        let P2Output = 180;
+        let P1Output = fwdLow;
+        let P2Output = fwdHigh;
         
         if (biasToApply < 50) {
-            // Want to move 0 towards 90
-            P2Output += 50 - biasToApply;
+            // Want to move fwdLow towards 90
+            P2Output += scaleBias(50 - biasToApply);
         } else if (biasToApply > 50) {
-            // Want to move 180 towards 90
-            P1Output -= biasToApply - 50;
+            // Want to move fwdHigh towards 90
+            P1Output -= scaleBias(biasToApply - 50);
         }
 
         pins.servoWritePin(AnalogPin.P1, P1Output);
@@ -128,15 +150,15 @@ namespace roversa {
     //% group="Basic" weight=86
     //% block="drive backward"
     export function backward(): void {
-        let P1Output = 0;
-        let P2Output = 180;
+        let P1Output = fwdLow;
+        let P2Output = fwdHigh;
         
         if (biasToApply < 50) {
-            // Want to move 180 towards 90
-            P2Output -= 50 - biasToApply;
+            // Want to move fwdHigh towards 90
+            P2Output -= scaleBias(50 - biasToApply);
         } else if (biasToApply > 50) {
-            // Want to move 0 towards 90
-            P1Output += biasToApply - 50;
+            // Want to move fwdLow towards 90
+            P1Output += scaleBias(biasToApply - 50);
         }
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
@@ -151,15 +173,15 @@ namespace roversa {
     //% group="Basic" weight=87
     //% block="drive forward"
     export function forward(): void {
-        let P1Output = 180;
-        let P2Output = 0;
+        let P1Output = fwdHigh;
+        let P2Output = fwdLow;
         
         if (biasToApply < 50) {
-            // Want to move 0 towards 90
-            P2Output += 50 - biasToApply;
+            // Want to move fwdLow towards 90
+            P2Output += scaleBias(50 - biasToApply);
         } else if (biasToApply > 50) {
-            // Want to move 180 towards 90
-            P1Output -= biasToApply - 50;
+            // Want to move fwdHigh towards 90
+            P1Output -= scaleBias(biasToApply - 50);
         }
 
         pins.servoWritePin(AnalogPin.P1, P1Output);
@@ -273,21 +295,46 @@ namespace roversa {
         pins.analogWritePin(AnalogPin.P2, 0);
     }
 	
+    /**
+     * Set how fast the robot drives, as a percentage of full speed.
+     * Lower values give more reliable movement on cheaper motors.
+     * @param percent eg: 70
+     */
+    //% blockId=roversa_set_speed
+    //% group="Calibrate" weight=70
+    //% block="set speed to %percent|\\%"
+    //% percent.min=0 percent.max=100 percent.defl=70
+    export function setSpeed(percent: number): void {
+        if (percent > 100) {
+            percent = 100;
+        } else if (percent < 0) {
+            percent = 0;
+        }
+        speedPercent = percent;
+        fwdHigh = 90 + (90 * speedPercent) / 100;
+        fwdLow = 90 - (90 * speedPercent) / 100;
+    }
+
    /**
-     * Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.
-     * @param bias eg: 50
+     * Nudge the robot when it drifts off a straight line.
+     * Pick the way you want to correct and how strongly; we handle the wheel maths.
+     * @param amount how strongly to correct, eg: 10
      */
     //% blockId=roversa_servos_bias
     //% group="Calibrate" weight=69
-    //% block="bias %biasDriving"
-    //% bias.min=0 bias.max=100
-    export function biasDriving(bias:number): void {
-        if (bias > 100) {
-            bias = 100;
-        } else if (bias < 0) {
-            bias = 0;
+    //% block="correct drift %direction by %amount"
+    //% amount.min=0 amount.max=50 amount.defl=10
+    export function correctDrift(direction: RoversaCorrection, amount: number): void {
+        if (amount > 50) {
+            amount = 50;
+        } else if (amount < 0) {
+            amount = 0;
         }
-        biasToApply = bias;
+        if (direction == RoversaCorrection.Left) {
+            biasToApply = 50 - amount;
+        } else {
+            biasToApply = 50 + amount;
+        }
     }
 	
     /**
