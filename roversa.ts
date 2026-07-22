@@ -324,7 +324,7 @@ namespace roversa {
      * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
      * @param direction which way to correct, eg: RoversaSteerTrimDirection.Right
      */
-    //% blockId=roversa_set_steer_trim
+    //% blockId=roversa_set_bias_correction
     //% group="Calibrate" weight=74
     //% block="correct %direction drift by %amount percent"
     //% amount.min=0 amount.max=100 amount.defl=0
