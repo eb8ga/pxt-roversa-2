@@ -33,6 +33,17 @@ enum RoversaEvent {
 }
 
 /**
+ * The direction to correct drift when setting steer trim
+ */
+//%
+enum RoversaSteerTrimDirection {
+    //% block="left"
+    Left = -1,
+    //% block="right"
+    Right = 1,
+}
+
+/**
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="" block="Roversa"
@@ -302,6 +313,24 @@ namespace roversa {
     //% amount.min=-50 amount.max=50 amount.defl=0
     export function setSteerTrim(amount: number): void {
         steerTrim = clamp(amount, -50, 50);
+    }
+
+
+    /**
+     * New option to correct drift so the robot drives in a straight line.
+     * User chooses to correct right or left drift, and a value from 0 to 100 correction. 
+     * We convert this to a -50 to 50 value for the steerTrim variable.
+     * It works by slowing the wheel on the inside of the curve.
+     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
+     * @param direction which way to correct, eg: RoversaSteerTrimDirection.Right
+     */
+    //% blockId=roversa_set_steer_trim
+    //% group="Calibrate" weight=74
+    //% block="correct %direction drift by %amount percent"
+    //% amount.min=0 amount.max=100 amount.defl=0
+    export function correctDrift(amount: number, direction: RoversaSteerTrimDirection): void {
+        let trueamount = direction*amount/2;
+        steerTrim = clamp(trueamount, -50, 50);
     }
 
     /**
