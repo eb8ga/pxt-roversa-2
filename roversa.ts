@@ -321,14 +321,14 @@ namespace roversa {
      * User chooses to correct right or left drift, and a value from 0 to 100 correction. 
      * We convert this to a -50 to 50 value for the steerTrim variable.
      * It works by slowing the wheel on the inside of the curve.
-     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
      * @param direction which way to correct, eg: RoversaSteerTrimDirection.Right
+     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
      */
     //% blockId=roversa_set_bias_correction
     //% group="Calibrate" weight=74
     //% block="correct %direction drift by %amount percent"
     //% amount.min=0 amount.max=100 amount.defl=0
-    export function correctDrift(amount: number, direction: RoversaSteerTrimDirection): void {
+    export function correctDrift(direction: RoversaSteerTrimDirection, amount: number): void {
         let trueamount = direction*amount/2;
         steerTrim = clamp(trueamount, -50, 50);
     }
