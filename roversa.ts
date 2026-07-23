@@ -57,7 +57,7 @@ namespace roversa {
     /* Some parameters used for controlling the turn and length of the roversa robot */
     const milliSecInASecond = 1000
     let distancePerSec = 100
-    let numberOfDegreesPerSec = 200
+    let numberOfDegreesPerSec = 160 //old default was 200
     let biasToApply = 50 //in the middle is the place to start
 
     /* Continuous-rotation servos: 90 is stopped, full speed is +/-90 from neutral.
@@ -152,6 +152,8 @@ namespace roversa {
     export function backward(): void {
         let P1Output = fwdLow;
         let P2Output = fwdHigh;
+        //default was 1250
+        let timeToWait = (125 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
         
         if (biasToApply < 50) {
             // Want to move fwdHigh towards 90
@@ -162,8 +164,9 @@ namespace roversa {
         }
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
-	basic.pause(1250);
+	    basic.pause(timeToWait);
         stop();
+        basic.pause(500);
     }
 
     /**
@@ -175,6 +178,8 @@ namespace roversa {
     export function forward(): void {
         let P1Output = fwdHigh;
         let P2Output = fwdLow;
+        //default was 1250 but I added the calculation so it can reflect calibration
+        let timeToWait = (125 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
         
         if (biasToApply < 50) {
             // Want to move fwdLow towards 90
@@ -186,8 +191,9 @@ namespace roversa {
 
         pins.servoWritePin(AnalogPin.P1, P1Output);
         pins.servoWritePin(AnalogPin.P2, P2Output);
-	basic.pause(1250);
+	    basic.pause(timeToWait);
         stop();
+        basic.pause(500);
     }
 
     /**
@@ -197,9 +203,10 @@ namespace roversa {
     //% group="Basic" weight=85
     //% block="turn left"
     export function left(): void {
+        let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
         pins.servoWritePin(AnalogPin.P1, 0);
         pins.servoWritePin(AnalogPin.P2, 0);
-	basic.pause(650);
+	    basic.pause(timeToWait);
         stop();
     }
 
@@ -210,9 +217,11 @@ namespace roversa {
     //% group="Basic" weight=84
     //% block="turn right"
     export function right(): void {
+        let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
         pins.servoWritePin(AnalogPin.P1, 180);
         pins.servoWritePin(AnalogPin.P2, 180);
-	basic.pause(650);
+        //default value was 650
+	    basic.pause(timeToWait);
         stop();
     }
 
@@ -289,10 +298,12 @@ namespace roversa {
      */
     //% blockId=roversa_servos_stop
     //% group="Advanced" weight=77
-    //% block="stop"
-    export function stop(): void {
+    //% block="stop || for %pause_seconds s"
+    //% pause_seconds.min=0 pause_seconds.max=10 pause_seconds.defl=0.5
+    export function stop(pause_seconds:number=0.5): void {
         pins.analogWritePin(AnalogPin.P1, 0);
         pins.analogWritePin(AnalogPin.P2, 0);
+        basic.pause(pause_seconds*1000)
     }
 	
     /**
