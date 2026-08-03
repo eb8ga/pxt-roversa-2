@@ -33,17 +33,6 @@ enum RoversaEvent {
 }
 
 /**
- * The direction to correct drift when setting steer trim
- */
-//%
-enum RoversaSteerTrimDirection {
-    //% block="left"
-    Left = -1,
-    //% block="right"
-    Right = 1,
-}
-
-/**
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="" block="Roversa"
@@ -163,7 +152,9 @@ namespace roversa {
     //% block="drive forward"
     export function forward(): void {
         driveStraight(1);
-        basic.pause(1250);
+         //150 mm is the default step in our mats
+        let timeToWait = (150 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
+        basic.pause(timeToWait);
         stop();
     }
 
@@ -175,7 +166,9 @@ namespace roversa {
     //% block="drive backward"
     export function backward(): void {
         driveStraight(-1);
-        basic.pause(1250);
+        //150 mm is the default step in our mats
+        let timeToWait = (150 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
+        basic.pause(timeToWait);
         stop();
     }
 
@@ -187,7 +180,8 @@ namespace roversa {
     //% block="turn left"
     export function left(): void {
         spin(-1);
-        basic.pause(650);
+        let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
+        basic.pause(timeToWait);
         stop();
     }
 
@@ -199,7 +193,9 @@ namespace roversa {
     //% block="turn right"
     export function right(): void {
         spin(1);
-        basic.pause(650);
+        // 90 degrees is the default turn 
+        let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
+        basic.pause(timeToWait);
         stop();
     }
 
@@ -317,23 +313,6 @@ namespace roversa {
 
 
     /**
-     * New option to correct drift so the robot drives in a straight line.
-     * User chooses to correct right or left drift, and a value from 0 to 100 correction. 
-     * We convert this to a -50 to 50 value for the steerTrim variable.
-     * It works by slowing the wheel on the inside of the curve.
-     * @param direction which way to correct, eg: RoversaSteerTrimDirection.Right
-     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
-     */
-    //% blockId=roversa_set_bias_correction
-    //% group="Calibrate" weight=74
-    //% block="correct %direction drift by %amount percent"
-    //% amount.min=0 amount.max=100 amount.defl=0
-    export function correctDrift(direction: RoversaSteerTrimDirection, amount: number): void {
-        let trueamount = direction*amount/2;
-        steerTrim = clamp(trueamount, -50, 50);
-    }
-
-    /**
      * The current steer trim, -50 (left) to 50 (right).
      */
     //% blockId=roversa_get_steer_trim
@@ -347,15 +326,15 @@ namespace roversa {
      * Test block: drive straight forwards for a number of seconds, then stop.
      * Use this to calibrate distance: run it, measure how far Roversa travelled,
      * then divide by the seconds and feed that into "calibrate drive amount".
-     * @param seconds how long to drive, eg: 1
+     * @param milliseconds how long to drive, eg: 1000
      */
     //% blockId=roversa_drive_for_seconds
-    //% group="Calibrate" weight=72
-    //% block="test: drive forward for %seconds|seconds"
-    //% seconds.min=0 seconds.defl=1
-    export function driveForwardForSeconds(seconds: number): void {
+    //% group="Test" weight=72
+    //% block="test: drive forward for %milliseconds|milliseconds"
+    //% milliseconds.min=0 milliseconds.defl=1000
+    export function driveForwardForSeconds(milliseconds: number): void {
         driveStraight(1);
-        basic.pause(seconds * milliSecInASecond);
+        basic.pause(milliseconds);
         stop();
     }
 
@@ -372,18 +351,30 @@ namespace roversa {
     }
 
     /**
-     * Test block: spin right on the spot for a number of seconds, then stop.
-     * Use this to calibrate turning: run it, measure how many degrees Roversa spun,
-     * then divide by the seconds and feed that into "calibrate turn amount".
-     * @param seconds how long to turn, eg: 1
+     * Allows the setting of roversa forward / reverse distance.
+     * This allows tuning the time it takes to move a certain distance.
+     * @param milliseconds : How many milliseconds it takes to move one square (150mm) on the mat.
+     */
+    //% blockId=roversa_set_movement_time_param
+    //% group="Calibrate" weight=71
+    //% block="calibrate drive amount to %milliseconds|milliseconds"
+    export function setMovementTime(milliseconds: number): void {
+        distancePerSec = 150 * milliSecInASecond / milliseconds
+    }
+
+    /**
+     * Test block: spin right on the spot for a number of milliseconds, then stop.
+     * Use this to calibrate turning: run it, modify the milliseconds until it turns 360 degrees,
+     * (or you see a full turn), write down the milliseconds, then feed into "calibrate full turn duration".
+     * @param milliseconds how long to turn, eg: 1000
      */
     //% blockId=roversa_turn_for_seconds
-    //% group="Calibrate" weight=70
-    //% block="test: turn right for %seconds|seconds"
-    //% seconds.min=0 seconds.defl=1
-    export function turnRightForSeconds(seconds: number): void {
+    //% group="Test" weight=70
+    //% block="test: turn right for %milliseconds|milliseconds"
+    //% milliseconds.min=0 milliseconds.defl=1000
+    export function turnRightForSeconds(milliseconds: number): void {
         spin(1);
-        basic.pause(seconds * milliSecInASecond);
+        basic.pause(milliseconds);
         stop();
     }
 
@@ -397,5 +388,18 @@ namespace roversa {
     //% block="calibrate turn amount to %degPerSec|degrees per second"
     export function setDegreesPerSecond(degPerSec: number): void {
         numberOfDegreesPerSec = degPerSec
+    }
+
+
+    /**
+     * Allows the setting the time it takes to turn 360 degrees.
+     * This allows tuning for the turn x degrees commands
+     * @param milliseconds : How many milliseconds it takes to turn 360 degrees.
+     */
+    //% blockId=roversa_set_turn_time_param
+    //% group="Calibrate" weight=69
+    //% block="calibrate turn amount to %milliseconds|milliseconds"
+    export function setTurnTime(milliseconds: number): void {
+        numberOfDegreesPerSec = 360 * milliSecInASecond / milliseconds
     }
 }
