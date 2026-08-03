@@ -36,7 +36,7 @@ enum RoversaEvent {
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="" block="Roversa"
-//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate']"
+//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate', 'Test']"
 namespace roversa {
     /**
      * **********************************************************************************************************************************************
@@ -329,7 +329,7 @@ namespace roversa {
      * @param milliseconds how long to drive, eg: 1000
      */
     //% blockId=roversa_drive_for_seconds
-    //% group="Test" weight=72
+    //% group="Test" weight=80
     //% block="test: drive forward for %milliseconds|milliseconds"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveForwardForSeconds(milliseconds: number): void {
@@ -369,7 +369,7 @@ namespace roversa {
      * @param milliseconds how long to turn, eg: 1000
      */
     //% blockId=roversa_turn_for_seconds
-    //% group="Test" weight=70
+    //% group="Test" weight=90
     //% block="test: turn right for %milliseconds|milliseconds"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function turnRightForSeconds(milliseconds: number): void {
@@ -379,26 +379,13 @@ namespace roversa {
     }
 
     /**
-     * Allows the setting of roversa turn amount.
-     * This allows tuning for the turn x degrees commands
-     * @param degPerSec : How many degrees per second the robot does.
-     */
-    //% blockId=roversa_set_turn_speed_param
-    //% group="Calibrate" weight=69
-    //% block="calibrate turn amount to %degPerSec|degrees per second"
-    export function setDegreesPerSecond(degPerSec: number): void {
-        numberOfDegreesPerSec = degPerSec
-    }
-
-
-    /**
      * Allows the setting the time it takes to turn 360 degrees.
      * This allows tuning for the turn x degrees commands
      * @param milliseconds : How many milliseconds it takes to turn 360 degrees.
      */
     //% blockId=roversa_set_turn_time_param
     //% group="Calibrate" weight=69
-    //% block="calibrate turn amount to %milliseconds|milliseconds"
+    //% block="calibrate %milliseconds|ms needed for a full turn"
     export function setTurnTime(milliseconds: number): void {
         numberOfDegreesPerSec = 360 * milliSecInASecond / milliseconds
     }
