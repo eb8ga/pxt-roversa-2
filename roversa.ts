@@ -170,6 +170,7 @@ namespace roversa {
         let timeToWait = (150 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
         basic.pause(timeToWait);
         stop();
+        basic.pause(500);
     }
 
     /**
@@ -268,10 +269,12 @@ namespace roversa {
      */
     //% blockId=roversa_servos_stop
     //% group="Advanced" weight=77
-    //% block="stop"
-    export function stop(): void {
+    //% block="stop || for %pause_seconds s"
+    //% pause_seconds.min=0 pause_seconds.max=10 pause_seconds.defl=0.5
+    export function stop(pause_seconds:number=0.5): void {
         pins.analogWritePin(AnalogPin.P1, 0);
         pins.analogWritePin(AnalogPin.P2, 0);
+        basic.pause(pause_seconds*1000)
     }
 
     /**

@@ -1,6 +1,10 @@
 {
     "name": "roversa",
+<<<<<<< HEAD
     "version": "1.0.30",
+=======
+    "version": "1.2.0",
+>>>>>>> main
     "description": "Blocks to simplify using Roversa in PXT",
     "license": "MIT",
     "dependencies": {
@@ -17,7 +21,11 @@
     ],
     "public": true,
     "targetVersions": {
+<<<<<<< HEAD
         "target": "9.0.8",
+=======
+        "target": "9.0.5",
+>>>>>>> main
         "targetId": "microbit"
     },
     "supportedTargets": [
