@@ -270,7 +270,7 @@ namespace roversa {
     //% blockId=roversa_servos_stop
     //% group="Advanced" weight=77
     //% block="stop || for %pause_seconds s"
-    //% pause_seconds.min=0 pause_seconds.max=10 pause_seconds.defl=0.5
+    //% pause_seconds.min=0 pause_seconds.max=11 pause_seconds.defl=0.5
     export function stop(pause_seconds:number=0.5): void {
         pins.analogWritePin(AnalogPin.P1, 0);
         pins.analogWritePin(AnalogPin.P2, 0);
