@@ -360,7 +360,7 @@ namespace roversa {
      */
     //% blockId=roversa_set_movement_time_param
     //% group="Calibrate" weight=71
-    //% block="calibrate drive amount to %milliseconds|milliseconds"
+    //% block="calibrate %milliseconds|milliseconds needed to move one square"
     export function setMovementTime(milliseconds: number): void {
         distancePerSec = 150 * milliSecInASecond / milliseconds
     }
