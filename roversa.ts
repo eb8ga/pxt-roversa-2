@@ -146,6 +146,7 @@ namespace roversa {
 
     /**
      * Drives forward. Call stop to stop
+     * @param howFar distance to move, in millimeters
      */
     //% blockId=roversa_servos_forward
     //% group="Basic" weight=87
@@ -201,12 +202,12 @@ namespace roversa {
     }
 
     /**
-     * Drives forwards the requested distance and then stops
+     * Drives forwards the requested distance (in millimeters) and then stops
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_forwards
     //% group="Advanced" weight=81
-    //% block="drive forwards %howFar|distance"
+    //% block="drive forwards %howFar|mm"
     export function driveForwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
         driveStraight(1);
@@ -215,12 +216,12 @@ namespace roversa {
     }
 
     /**
-     * Drives backwards the requested distance and then stops
+     * Drives backwards the requested distance (in millimeters) and then stops
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_backwards
     //% group="Advanced" weight=80
-    //% block="drive backwards %howFar|distance"
+    //% block="drive backwards %howFar|mm"
     export function driveBackwards(howFar: number): void {
         let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
         driveStraight(-1);
