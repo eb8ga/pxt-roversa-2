@@ -50,7 +50,7 @@ namespace roversa {
 
     /* Continuous-rotation servos: 90 is stopped, full speed is +/-90 from neutral.
        speedPercent caps movement at a percentage of full speed for reliable motion on cheap motors. */
-    let speedPercent = 70
+    let speedPercent = 80
 
     /* Steer trim to correct drift. Range -50..50.
        Positive curves the robot to the right, negative to the left.

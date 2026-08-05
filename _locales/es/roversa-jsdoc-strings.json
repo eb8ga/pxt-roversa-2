@@ -18,7 +18,7 @@
   "roversa.stop": "Detiene los servos de 360°. En lugar de escribir 90 (que puede no detener el servo si está descalibrado), deja de enviar pulsos, con el mismo efecto. Opcionalmente hace una pausa después de parar.",
   "roversa.stop|param|pause_seconds": "segundos de pausa después de parar, ej: 0.5",
   "roversa.setSpeed": "Fija la velocidad del robot como porcentaje de la velocidad máxima. Valores más bajos dan un movimiento más fiable en motores económicos.",
-  "roversa.setSpeed|param|percent": "ej: 70",
+  "roversa.setSpeed|param|percent": "ej: 80",
   "roversa.speed": "La velocidad actual, como porcentaje de la velocidad máxima.",
   "roversa.setSteerTrim": "Corrige la desviación para que el robot avance recto. Valores positivos curvan a la derecha, negativos a la izquierda. Frena la rueda del lado interior de la curva.",
   "roversa.setSteerTrim|param|amount": "cuánto corregir, -50 (izquierda) a 50 (derecha), ej: 0",
