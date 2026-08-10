@@ -327,16 +327,14 @@ namespace roversa {
     }
 
     /**
-     * Test block: drive straight forwards for a number of seconds, then stop.
-     * Use this to calibrate distance: run it, measure how far Roversa travelled,
-     * then divide by the seconds and feed that into "calibrate drive amount".
+     * Test block: drive straight forwards for a number of milliseconds, then stop.
      * @param milliseconds how long to drive, eg: 1000
      */
     //% blockId=roversa_drive_for_seconds
     //% group="Test" weight=80
     //% block="test: drive forward for %milliseconds|milliseconds"
     //% milliseconds.min=0 milliseconds.defl=1000
-    export function driveForwardForSeconds(milliseconds: number): void {
+    export function driveForwardForMilliseconds(milliseconds: number): void {
         driveStraight(1);
         basic.pause(milliseconds);
         stop();
@@ -377,7 +375,7 @@ namespace roversa {
     //% group="Test" weight=90
     //% block="test: turn right for %milliseconds|milliseconds"
     //% milliseconds.min=0 milliseconds.defl=1000
-    export function turnRightForSeconds(milliseconds: number): void {
+    export function turnRightForMilliseconds(milliseconds: number): void {
         spin(1);
         basic.pause(milliseconds);
         stop();

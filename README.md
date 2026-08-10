@@ -67,27 +67,33 @@ roversa.steerTrimValue()
 *Reports the current steer trim, so you can read it in Blocks.*
 
 #### Calibrating distance and turning
-Driving a set distance or turning a set number of degrees depends on knowing how fast Roversa actually moves. The two test blocks let you measure that: run one for a known time, measure the result with a ruler / protractor, then divide by the seconds and feed that into the matching calibrate block.
+`drive forwards` a set distance and `turn` a set number of degrees only work once Roversa knows how long its motors need. You calibrate by running a **test** block, adjusting the milliseconds until Roversa produces a known result, then saving that time. No maths required — the extension does the conversion for you.
+
+> Tip: the steer trim is applied while driving straight, so set your steer trim first. Otherwise Roversa curves during the distance test and the number will be off.
+
+**Distance** — one mat square is 150 mm. Run the test, changing the milliseconds until Roversa travels exactly one square, then store that time.
 
 ```block
-roversa.driveForwardForSeconds(1)
+roversa.driveForwardForMilliseconds(1000)
 ```
-*Test: drive straight forward for the given seconds, then stop. Measure the distance travelled.*
+*Test: drive straight forward for the given milliseconds, then stop.*
 
 ```block
-roversa.setDistancePerSecond(10)
+roversa.setMovementTime(1250)
 ```
-*Allows the setting of Roversa forward / reverse distance in mm per second. This tunes the move x distance commands.*
+*Stores how many milliseconds it takes to move one square (150 mm). This tunes the drive-distance blocks.*
+
+**Turning** — run the test, changing the milliseconds until Roversa spins exactly one full circle (360°), then store that time.
 
 ```block
-roversa.turnRightForSeconds(1)
+roversa.turnRightForMilliseconds(2400)
 ```
-*Test: spin right on the spot for the given seconds, then stop. Measure the degrees turned.*
+*Test: spin right on the spot for the given milliseconds, then stop.*
 
 ```block
-roversa.setDegreesPerSecond(2)
+roversa.setTurnTime(2400)
 ```
-*Allows the setting of Roversa turn amount in degrees per second. This tunes the turn x degrees commands.*
+*Stores how many milliseconds it takes to spin a full 360° turn. This tunes the turn-degrees blocks.*
 
 ### Servo
 
@@ -122,11 +128,11 @@ roversa.driveBackwards(10)
 ```block
 roversa.turnRight(90)
 ```
-*Turns right through the requested degrees and then stops, needs **NumberOfDegreesPerSec** tuned to make accurate, as it uses a simple turn, wait, stop method.*
+*Turns right through the requested degrees and then stops. Needs the full-turn calibration tuned to be accurate, as it uses a simple turn, wait, stop method.*
 ```block
 roversa.turnLeft(90)
 ```
-*Turns left through the requested degrees and then stops, needs **NumberOfDegreesPerSec** tuned to make accurate, as it uses a simple turn, wait, stop method.*
+*Turns left through the requested degrees and then stops. Needs the full-turn calibration tuned to be accurate, as it uses a simple turn, wait, stop method.*
 
 ## License
 
