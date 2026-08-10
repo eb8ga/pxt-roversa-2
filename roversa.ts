@@ -145,16 +145,15 @@ namespace roversa {
     }
 
     /**
-     * Drives forward. Call stop to stop
-     * @param howFar distance to move, in millimeters
+     * Drives forward one square (150mm) and then stops.
      */
     //% blockId=roversa_servos_forward
     //% group="Basic" weight=87
     //% block="drive forward"
     export function forward(): void {
         driveStraight(1);
-         //150 mm is the default step in our mats
-        let timeToWait = (150 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
+         //Default 150mm square on our mats
+        let timeToWait = (150 * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
         basic.pause(timeToWait);
         stop();
     }
@@ -167,8 +166,8 @@ namespace roversa {
     //% block="drive backward"
     export function backward(): void {
         driveStraight(-1);
-        //150 mm is the default step in our mats
-        let timeToWait = (150 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
+        //Default 150mm square on our mats
+        let timeToWait = (150 * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
         basic.pause(timeToWait);
         stop();
         basic.pause(500);
@@ -182,6 +181,7 @@ namespace roversa {
     //% block="turn left"
     export function left(): void {
         spin(-1);
+        // Default 90 degrees turn
         let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
         basic.pause(timeToWait);
         stop();
@@ -195,7 +195,7 @@ namespace roversa {
     //% block="turn right"
     export function right(): void {
         spin(1);
-        // 90 degrees is the default turn 
+        // Default 90 degrees turn
         let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
         basic.pause(timeToWait);
         stop();
@@ -209,7 +209,7 @@ namespace roversa {
     //% group="Advanced" weight=81
     //% block="drive forwards %howFar|mm"
     export function driveForwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
+        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
         driveStraight(1);
         basic.pause(timeToWait);
         stop();
@@ -223,7 +223,7 @@ namespace roversa {
     //% group="Advanced" weight=80
     //% block="drive backwards %howFar|mm"
     export function driveBackwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
+        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
         driveStraight(-1);
         basic.pause(timeToWait);
         stop();
@@ -239,7 +239,7 @@ namespace roversa {
     //% group="Advanced" weight=79
     //% block="turn right %deg|degrees"
     export function turnRight(deg: number): void {
-        let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
+        let timeToWait = (deg * milliSecInASecond) / Math.max(1, numberOfDegreesPerSec);// calculation done this way round to avoid zero rounding
         spin(1);
         basic.pause(timeToWait);
         stop();
@@ -255,7 +255,7 @@ namespace roversa {
     //% group="Advanced" weight=78
     //% block="turn left %deg|degrees"
     export function turnLeft(deg: number): void {
-        let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
+        let timeToWait = (deg * milliSecInASecond) / Math.max(1, numberOfDegreesPerSec);// calculation done this way round to avoid zero rounding
         spin(-1);
         basic.pause(timeToWait);
         stop()
@@ -362,8 +362,9 @@ namespace roversa {
     //% blockId=roversa_set_movement_time_param
     //% group="Calibrate" weight=71
     //% block="calibrate %milliseconds|milliseconds needed to move one square"
+    //% milliseconds.min=1 milliseconds.defl=1000
     export function setMovementTime(milliseconds: number): void {
-        distancePerSec = 150 * milliSecInASecond / milliseconds
+        distancePerSec = 150 * milliSecInASecond / Math.max(1, milliseconds)
     }
 
     /**
@@ -390,7 +391,8 @@ namespace roversa {
     //% blockId=roversa_set_turn_time_param
     //% group="Calibrate" weight=69
     //% block="calibrate %milliseconds|ms needed for a full turn"
+    //% milliseconds.min=1 milliseconds.defl=2000
     export function setTurnTime(milliseconds: number): void {
-        numberOfDegreesPerSec = 360 * milliSecInASecond / milliseconds
+        numberOfDegreesPerSec = 360 * milliSecInASecond /  Math.max(1, milliseconds)
     }
 }
