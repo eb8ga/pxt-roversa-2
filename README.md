@@ -39,23 +39,61 @@ roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
 *Registers code to run when a Roversa event is detected.*
 
 ### Calibrate
-Users can use bias to ensure that the servos are moving in a similar fashion. This will allow users to change the left or right motor regardless of trim. 0-50 adjust the left motor, 50-100 adjusts the right motor.
+
+#### Speed
+All movement runs at a percentage of full speed. Lower values give more reliable motion on cheaper motors. This one cap applies to driving and turning alike.
 
 ```block
-roversa.biasDriving(50)
+roversa.setSpeed(70)
 ```
-*Apply a bias to the wheels. 0 to 50 for left, 50 to 100 for right.*
-
-Users can also adjust the amount of degrees per turn and amount of mm per second when using future function like turning a certain number of degrees or moving a specified distance. This ensures that Roversa is moving exactly as planned. Use these to coincide with `roversa.turnLeft` and `roversa.turnRight` for turning and `roversa.driveForwards` and `roversa.driveBackwards` to go a straight distance. In this example it will turn 2 degrees/s or move 10 mm/s.
+*Set how fast the robot drives, as a percentage of full speed (0-100).*
 
 ```block
-roversa.setDegreesPerSecond(2)
+roversa.speed()
 ```
-*Allows the setting of Roversa turn amount. This allows tuning for the turn x degrees commands*
- ```block
-roversa.setDistancePerSecond(10)
+*Reports the current speed percentage, so you can read it in Blocks.*
+
+#### Steer trim (drift correction)
+If Roversa curves instead of driving straight, use the steer trim to nudge it back. A positive value curves the robot to the right, a negative value to the left. It works by slowing the wheel on the inside of the curve, and it is applied automatically by every forward / backward / drive-distance block.
+
+```block
+roversa.setSteerTrim(0)
 ```
-*Allows the setting of Roversa forward / reverse distance. This allows tuning for the move x distance commands*
+*Correct drift. -50 (left) to 50 (right).*
+
+```block
+roversa.steerTrimValue()
+```
+*Reports the current steer trim, so you can read it in Blocks.*
+
+#### Calibrating distance and turning
+`drive forwards` a set distance and `turn` a set number of degrees only work once Roversa knows how long its motors need. You calibrate by running a **test** block, adjusting the milliseconds until Roversa produces a known result, then saving that time. No maths required — the extension does the conversion for you.
+
+> Tip: the steer trim is applied while driving straight, so set your steer trim first. Otherwise Roversa curves during the distance test and the number will be off.
+
+**Distance** — one mat square is 150 mm. Run the test, changing the milliseconds until Roversa travels exactly one square, then store that time.
+
+```block
+roversa.driveForwardForMilliseconds(1000)
+```
+*Test: drive straight forward for the given milliseconds, then stop.*
+
+```block
+roversa.setMovementTime(1250)
+```
+*Stores how many milliseconds it takes to move one square (150 mm). This tunes the drive-distance blocks.*
+
+**Turning** — run the test, changing the milliseconds until Roversa spins exactly one full circle (360°), then store that time.
+
+```block
+roversa.turnRightForMilliseconds(2400)
+```
+*Test: spin right on the spot for the given milliseconds, then stop.*
+
+```block
+roversa.setTurnTime(2400)
+```
+*Stores how many milliseconds it takes to spin a full 360° turn. This tunes the turn-degrees blocks.*
 
 ### Servo
 
@@ -90,11 +128,11 @@ roversa.driveBackwards(10)
 ```block
 roversa.turnRight(90)
 ```
-*Turns right through the requested degrees and then stops, needs **NumberOfDegreesPerSec** tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the left function to reduce wheel slip*
+*Turns right through the requested degrees and then stops. Needs the full-turn calibration tuned to be accurate, as it uses a simple turn, wait, stop method.*
 ```block
 roversa.turnLeft(90)
 ```
-*Turns left through the requested degrees and then stops, needs **NumberOfDegreesPerSec** tuned to make accurate, as it uses a simple turn, wait, stop method. Runs the servos at slower than the right function to reduce wheel slip*
+*Turns left through the requested degrees and then stops. Needs the full-turn calibration tuned to be accurate, as it uses a simple turn, wait, stop method.*
 
 ## License
 

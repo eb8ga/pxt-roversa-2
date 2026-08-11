@@ -33,21 +33,10 @@ enum RoversaEvent {
 }
 
 /**
- * Which way to nudge the robot when it drifts off a straight line
- */
-//%
-enum RoversaCorrection {
-    //% block="to the left"
-    Left,
-    //% block="to the right"
-    Right,
-}
-
-/**
  * Blocks for driving the Roversa robot
  */
-//% weight=100 color=#d55e00 icon="\uf085" block="Roversa"
-//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate']"
+//% weight=100 color=#d55e00 icon="" block="Roversa"
+//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate', 'Test']"
 namespace roversa {
     /**
      * **********************************************************************************************************************************************
@@ -57,25 +46,68 @@ namespace roversa {
     /* Some parameters used for controlling the turn and length of the roversa robot */
     const milliSecInASecond = 1000
     let distancePerSec = 100
-    let numberOfDegreesPerSec = 160 //old default was 200
-    let biasToApply = 50 //in the middle is the place to start
+    let numberOfDegreesPerSec = 200
 
     /* Continuous-rotation servos: 90 is stopped, full speed is +/-90 from neutral.
-       Cap movement at a percentage of full speed for reliable motion on cheap motors. */
-    let speedPercent = 70
-    let fwdHigh = 90 + (90 * speedPercent) / 100 // 153 at 70%
-    let fwdLow = 90 - (90 * speedPercent) / 100  // 27 at 70%
+       speedPercent caps movement at a percentage of full speed for reliable motion on cheap motors. */
+    let speedPercent = 80
 
-    /* Scale the steering bias offset so it stays proportional at reduced speed */
-    function scaleBias(offset: number): number {
-        return (offset * speedPercent) / 100;
+    /* Steer trim to correct drift. Range -50..50.
+       Positive curves the robot to the right, negative to the left.
+       It works by slowing the wheel on the inside of the curve. */
+    let steerTrim = 0
+
+    function clamp(value: number, low: number, high: number): number {
+        if (value < low) return low;
+        if (value > high) return high;
+        return value;
     }
 
-	/**
-	 * 
-	 */
-      let initialized = false;
-      function init() {
+    /**
+     * The single point where the servos are driven.
+     * left / right are signed wheel speeds from -100 (full reverse) to 100 (full forward).
+     * The motors are mirrored, so forward is 90+ on P1 and 90- on P2.
+     * speedPercent caps the top speed of both wheels together.
+     */
+    function setMotors(left: number, right: number): void {
+        left = clamp(left, -100, 100);
+        right = clamp(right, -100, 100);
+        // (left/100) * (speedPercent/100) * 90, combined to keep the integer maths tidy
+        let p1 = 90 + (90 * left * speedPercent) / 10000;
+        let p2 = 90 - (90 * right * speedPercent) / 10000;
+        pins.servoWritePin(AnalogPin.P1, p1);
+        pins.servoWritePin(AnalogPin.P2, p2);
+    }
+
+    /**
+     * Drive both wheels in a straight line, applying the steer trim.
+     * dir is 1 for forwards, -1 for backwards.
+     * A positive steerTrim slows the right wheel, a negative one slows the left wheel.
+     */
+    function driveStraight(dir: number): void {
+        let left = 100;
+        let right = 100;
+        if (steerTrim > 0) {
+            right = 100 - 2 * steerTrim;   // steer right: slow the right wheel
+        } else if (steerTrim < 0) {
+            left = 100 + 2 * steerTrim;    // steer left: slow the left wheel
+        }
+        setMotors(dir * left, dir * right);
+    }
+
+    /**
+     * Spin the robot on the spot.
+     * dir is 1 to spin right, -1 to spin left.
+     */
+    function spin(dir: number): void {
+        setMotors(dir * 100, -dir * 100);
+    }
+
+    /**
+     *
+     */
+    let initialized = false;
+    function init() {
         if (initialized) return;
         pins.pushButton(DigitalPin.P5)
         pins.pushButton(DigitalPin.P8)
@@ -87,41 +119,10 @@ namespace roversa {
         initialized = true;
     }
 
-    function forwardHard(): void {
-        let P1Output = fwdHigh;
-        let P2Output = fwdLow;
-        
-        if (biasToApply < 50) {
-            // Want to move fwdHigh towards 90
-            P2Output -= scaleBias(50 - biasToApply);
-        } else if (biasToApply > 50) {
-            // Want to move fwdLow towards 90
-            P1Output += scaleBias(biasToApply - 50);
-        }
-
-        pins.servoWritePin(AnalogPin.P1, P1Output);
-        pins.servoWritePin(AnalogPin.P2, P2Output);
-    }
-
-    function backwardHard(): void {
-        let P1Output = fwdLow;
-        let P2Output = fwdHigh;
-        
-        if (biasToApply < 50) {
-            // Want to move fwdLow towards 90
-            P2Output += scaleBias(50 - biasToApply);
-        } else if (biasToApply > 50) {
-            // Want to move fwdHigh towards 90
-            P1Output -= scaleBias(biasToApply - 50);
-        }
-
-        pins.servoWritePin(AnalogPin.P1, P1Output);
-        pins.servoWritePin(AnalogPin.P2, P2Output);
-    }
-	/**
-	 * Determines if a button is pressed
-	 * @param button the pin that acts as a button
-	 */
+    /**
+     * Determines if a button is pressed
+     * @param button the pin that acts as a button
+     */
     //% blockId=roversa_ispressed block="Roversa button %button|is pressed"
     //% group="Buttons" weight=91
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
@@ -131,9 +132,9 @@ namespace roversa {
         return pins.digitalReadPin(<DigitalPin><number>button) == 0;
     }
 
-	/**
-	 * Registers code to run when a Roversa button is detected.
-	 */
+    /**
+     * Registers code to run when a Roversa button is detected.
+     */
     //% blockId=roversa_onevent block="Roversa button on %button|%event"
     //% group="Buttons" weight=90
     //% button.fieldEditor="gridpicker" button.fieldOptions.columns=3
@@ -144,54 +145,30 @@ namespace roversa {
     }
 
     /**
+     * Drives forward one square (150mm) and then stops.
+     */
+    //% blockId=roversa_servos_forward
+    //% group="Basic" weight=87
+    //% block="drive forward"
+    export function forward(): void {
+        driveStraight(1);
+         //Default 150mm square on our mats
+        let timeToWait = (150 * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        basic.pause(timeToWait);
+        stop();
+    }
+
+    /**
      * Drives backwards. Call stop to stop
      */
     //% blockId=roversa_servos_backward
     //% group="Basic" weight=86
     //% block="drive backward"
     export function backward(): void {
-        let P1Output = fwdLow;
-        let P2Output = fwdHigh;
-        //default was 1250
-        let timeToWait = (125 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
-        
-        if (biasToApply < 50) {
-            // Want to move fwdHigh towards 90
-            P2Output -= scaleBias(50 - biasToApply);
-        } else if (biasToApply > 50) {
-            // Want to move fwdLow towards 90
-            P1Output += scaleBias(biasToApply - 50);
-        }
-        pins.servoWritePin(AnalogPin.P1, P1Output);
-        pins.servoWritePin(AnalogPin.P2, P2Output);
-	    basic.pause(timeToWait);
-        stop();
-        basic.pause(500);
-    }
-
-    /**
-     * Drives forward. Call stop to stop
-     */
-    //% blockId=roversa_servos_forward
-    //% group="Basic" weight=87
-    //% block="drive forward"
-    export function forward(): void {
-        let P1Output = fwdHigh;
-        let P2Output = fwdLow;
-        //default was 1250 but I added the calculation so it can reflect calibration
-        let timeToWait = (125 * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
-        
-        if (biasToApply < 50) {
-            // Want to move fwdLow towards 90
-            P2Output += scaleBias(50 - biasToApply);
-        } else if (biasToApply > 50) {
-            // Want to move fwdHigh towards 90
-            P1Output -= scaleBias(biasToApply - 50);
-        }
-
-        pins.servoWritePin(AnalogPin.P1, P1Output);
-        pins.servoWritePin(AnalogPin.P2, P2Output);
-	    basic.pause(timeToWait);
+        driveStraight(-1);
+        //Default 150mm square on our mats
+        let timeToWait = (150 * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        basic.pause(timeToWait);
         stop();
         basic.pause(500);
     }
@@ -203,10 +180,10 @@ namespace roversa {
     //% group="Basic" weight=85
     //% block="turn left"
     export function left(): void {
+        spin(-1);
+        // Default 90 degrees turn
         let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
-        pins.servoWritePin(AnalogPin.P1, 0);
-        pins.servoWritePin(AnalogPin.P2, 0);
-	    basic.pause(timeToWait);
+        basic.pause(timeToWait);
         stop();
     }
 
@@ -217,38 +194,37 @@ namespace roversa {
     //% group="Basic" weight=84
     //% block="turn right"
     export function right(): void {
+        spin(1);
+        // Default 90 degrees turn
         let timeToWait = (90 * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
-        pins.servoWritePin(AnalogPin.P1, 180);
-        pins.servoWritePin(AnalogPin.P2, 180);
-        //default value was 650
-	    basic.pause(timeToWait);
-        stop();
-    }
-
-    /**
-     * Drives forwards the requested distance and then stops
-     * @param howFar distance to move
-     */
-    //% blockId=roversa_drive_forwards
-    //% group="Advanced" weight=81
-    //% block="drive forwards %howFar|distance" 
-    export function driveForwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
-        forwardHard();
         basic.pause(timeToWait);
         stop();
     }
 
     /**
-     * Drives backwards the requested distance and then stops
+     * Drives forwards the requested distance (in millimeters) and then stops
+     * @param howFar distance to move
+     */
+    //% blockId=roversa_drive_forwards
+    //% group="Advanced" weight=81
+    //% block="drive forwards %howFar|mm"
+    export function driveForwards(howFar: number): void {
+        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        driveStraight(1);
+        basic.pause(timeToWait);
+        stop();
+    }
+
+    /**
+     * Drives backwards the requested distance (in millimeters) and then stops
      * @param howFar distance to move
      */
     //% blockId=roversa_drive_backwards
     //% group="Advanced" weight=80
-    //% block="drive backwards %howFar|distance" 
+    //% block="drive backwards %howFar|mm"
     export function driveBackwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / distancePerSec; // calculation done this way round to avoid zero rounding
-        backwardHard();
+        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        driveStraight(-1);
         basic.pause(timeToWait);
         stop();
     }
@@ -257,16 +233,14 @@ namespace roversa {
      * Turns right through the requested degrees and then stops
      * needs NumberOfDegreesPerSec tuned to make accurate, as it uses
      * a simple turn, wait, stop method.
-     * Runs the servos at slower than the right function to reduce wheel slip
      * @param deg how far to turn, eg: 90
      */
     //% blockId=roversa_turn_right
     //% group="Advanced" weight=79
     //% block="turn right %deg|degrees"
     export function turnRight(deg: number): void {
-        let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
-        pins.servoWritePin(AnalogPin.P1, 130);
-        pins.servoWritePin(AnalogPin.P2, 130);
+        let timeToWait = (deg * milliSecInASecond) / Math.max(1, numberOfDegreesPerSec);// calculation done this way round to avoid zero rounding
+        spin(1);
         basic.pause(timeToWait);
         stop();
     }
@@ -275,16 +249,14 @@ namespace roversa {
     * Turns left through the requested degrees and then stops
     * needs NumberOfDegreesPerSec tuned to make accurate, as it uses
     * a simple turn, wait, stop method.
-    * Runs the servos at slower than the right function to reduce wheel slip
     * @param deg how far to turn, eg: 90
     */
     //% blockId=roversa_turn_left
     //% group="Advanced" weight=78
     //% block="turn left %deg|degrees"
     export function turnLeft(deg: number): void {
-        let timeToWait = (deg * milliSecInASecond) / numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
-        pins.servoWritePin(AnalogPin.P1, 50);
-        pins.servoWritePin(AnalogPin.P2, 50);
+        let timeToWait = (deg * milliSecInASecond) / Math.max(1, numberOfDegreesPerSec);// calculation done this way round to avoid zero rounding
+        spin(-1);
         basic.pause(timeToWait);
         stop()
     }
@@ -299,65 +271,73 @@ namespace roversa {
     //% blockId=roversa_servos_stop
     //% group="Advanced" weight=77
     //% block="stop || for %pause_seconds s"
-    //% pause_seconds.min=0 pause_seconds.max=10 pause_seconds.defl=0.5
+    //% pause_seconds.min=0 pause_seconds.max=11 pause_seconds.defl=0.5
     export function stop(pause_seconds:number=0.5): void {
         pins.analogWritePin(AnalogPin.P1, 0);
         pins.analogWritePin(AnalogPin.P2, 0);
         basic.pause(pause_seconds*1000)
     }
-	
+
     /**
      * Set how fast the robot drives, as a percentage of full speed.
      * Lower values give more reliable movement on cheaper motors.
      * @param percent eg: 70
      */
     //% blockId=roversa_set_speed
-    //% group="Calibrate" weight=70
+    //% group="Calibrate" weight=76
     //% block="set speed to %percent|\\%"
     //% percent.min=0 percent.max=100 percent.defl=70
     export function setSpeed(percent: number): void {
-        if (percent > 100) {
-            percent = 100;
-        } else if (percent < 0) {
-            percent = 0;
-        }
-        speedPercent = percent;
-        fwdHigh = 90 + (90 * speedPercent) / 100;
-        fwdLow = 90 - (90 * speedPercent) / 100;
+        speedPercent = clamp(percent, 0, 100);
     }
 
-   /**
-     * Nudge the robot when it drifts off a straight line.
-     * Pick the way you want to correct and how strongly; we handle the wheel maths.
-     * @param amount how strongly to correct, eg: 10
-     */
-    //% blockId=roversa_servos_bias
-    //% group="Calibrate" weight=69
-    //% block="correct drift %direction by %amount"
-    //% amount.min=0 amount.max=50 amount.defl=10
-    export function correctDrift(direction: RoversaCorrection, amount: number): void {
-        if (amount > 50) {
-            amount = 50;
-        } else if (amount < 0) {
-            amount = 0;
-        }
-        if (direction == RoversaCorrection.Left) {
-            biasToApply = 50 - amount;
-        } else {
-            biasToApply = 50 + amount;
-        }
-    }
-	
     /**
-     * Allows the setting of roversa turn amount.
-     * This allows tuning for the turn x degrees commands
-     * @param degPerSec : How many degrees per second the robot does.
+     * The current speed, as a percentage of full speed.
      */
-    //% blockId=roversa_set_turn_speed_param
-    //% group="Calibrate" weight=68
-    //% block="calibrate turn amount to %degPerSec|degrees per second" 
-    export function setDegreesPerSecond(degPerSec: number): void {
-        numberOfDegreesPerSec = degPerSec
+    //% blockId=roversa_get_speed
+    //% group="Calibrate" weight=75
+    //% block="speed (\\%)"
+    export function speed(): number {
+        return speedPercent;
+    }
+
+    /**
+     * Correct drift so the robot drives in a straight line.
+     * Positive values curve the robot to the right, negative values to the left.
+     * It works by slowing the wheel on the inside of the curve.
+     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
+     */
+    //% blockId=roversa_set_steer_trim
+    //% group="Calibrate" weight=74
+    //% block="set steer trim to %amount"
+    //% amount.min=-50 amount.max=50 amount.defl=0
+    export function setSteerTrim(amount: number): void {
+        steerTrim = clamp(amount, -50, 50);
+    }
+
+
+    /**
+     * The current steer trim, -50 (left) to 50 (right).
+     */
+    //% blockId=roversa_get_steer_trim
+    //% group="Calibrate" weight=73
+    //% block="steer trim"
+    export function steerTrimValue(): number {
+        return steerTrim;
+    }
+
+    /**
+     * Test block: drive straight forwards for a number of milliseconds, then stop.
+     * @param milliseconds how long to drive, eg: 1000
+     */
+    //% blockId=roversa_drive_for_seconds
+    //% group="Test" weight=80
+    //% block="test: drive forward for %milliseconds|milliseconds"
+    //% milliseconds.min=0 milliseconds.defl=1000
+    export function driveForwardForMilliseconds(milliseconds: number): void {
+        driveStraight(1);
+        basic.pause(milliseconds);
+        stop();
     }
 
     /**
@@ -365,10 +345,52 @@ namespace roversa {
      * This allows tuning for the move x distance commands
      * @param distPerSec : How many mm per second the robot does.
      */
-    //% blockId=roversa_set_movement_speed_param 
-    //% group="Calibrate" weight=67
+    //% blockId=roversa_set_movement_speed_param
+    //% group="Calibrate" weight=71
     //% block="calibrate drive amount to %distPerSec|mm per second"
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
+    }
+
+    /**
+     * Allows the setting of roversa forward / reverse distance.
+     * This allows tuning the time it takes to move a certain distance.
+     * @param milliseconds : How many milliseconds it takes to move one square (150mm) on the mat.
+     */
+    //% blockId=roversa_set_movement_time_param
+    //% group="Calibrate" weight=71
+    //% block="calibrate %milliseconds|milliseconds needed to move one square"
+    //% milliseconds.min=1 milliseconds.defl=1000
+    export function setMovementTime(milliseconds: number): void {
+        distancePerSec = 150 * milliSecInASecond / Math.max(1, milliseconds)
+    }
+
+    /**
+     * Test block: spin right on the spot for a number of milliseconds, then stop.
+     * Use this to calibrate turning: run it, modify the milliseconds until it turns 360 degrees,
+     * (or you see a full turn), write down the milliseconds, then feed into "calibrate full turn duration".
+     * @param milliseconds how long to turn, eg: 1000
+     */
+    //% blockId=roversa_turn_for_seconds
+    //% group="Test" weight=90
+    //% block="test: turn right for %milliseconds|milliseconds"
+    //% milliseconds.min=0 milliseconds.defl=1000
+    export function turnRightForMilliseconds(milliseconds: number): void {
+        spin(1);
+        basic.pause(milliseconds);
+        stop();
+    }
+
+    /**
+     * Allows the setting the time it takes to turn 360 degrees.
+     * This allows tuning for the turn x degrees commands
+     * @param milliseconds : How many milliseconds it takes to turn 360 degrees.
+     */
+    //% blockId=roversa_set_turn_time_param
+    //% group="Calibrate" weight=69
+    //% block="calibrate %milliseconds|ms needed for a full turn"
+    //% milliseconds.min=1 milliseconds.defl=2000
+    export function setTurnTime(milliseconds: number): void {
+        numberOfDegreesPerSec = 360 * milliSecInASecond /  Math.max(1, milliseconds)
     }
 }

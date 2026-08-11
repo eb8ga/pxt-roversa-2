@@ -8,7 +8,7 @@ input.onButtonPressed(Button.B, () => {
 })
 // stop
 input.onButtonPressed(Button.AB, () => {
-    roversa.stop
+    roversa.stop()
 })
 
 // plot corresponding points on the led matrix for each button event
