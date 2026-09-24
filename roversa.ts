@@ -33,6 +33,20 @@ enum RoversaEvent {
 }
 
 /**
+ * Which driving direction a steer trim applies to.
+ * Roversa is not symmetrical, so forward and reverse can need different corrections.
+ */
+//%
+enum RoversaDirection {
+    //% block="forward"
+    Forward,
+    //% block="reverse"
+    Reverse,
+    //% block="both"
+    Both,
+}
+
+/**
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="" block="Roversa"
@@ -53,9 +67,12 @@ namespace roversa {
     let speedPercent = 80
 
     /* Steer trim to correct drift. Range -50..50.
-       Positive curves the robot to the right, negative to the left.
-       It works by slowing the wheel on the inside of the curve. */
-    let steerTrim = 0
+       Positive slows the right wheel, negative slows the left wheel.
+       Roversa is not symmetrical (the caster trails when pushed but wanders when pulled,
+       and the servos rarely match in both rotation directions), so forward and reverse
+       keep their own correction. */
+    let steerTrimForward = 0
+    let steerTrimReverse = 0
 
     function clamp(value: number, low: number, high: number): number {
         if (value < low) return low;
@@ -80,17 +97,18 @@ namespace roversa {
     }
 
     /**
-     * Drive both wheels in a straight line, applying the steer trim.
+     * Drive both wheels in a straight line, applying the steer trim for that direction.
      * dir is 1 for forwards, -1 for backwards.
-     * A positive steerTrim slows the right wheel, a negative one slows the left wheel.
+     * A positive trim slows the right wheel, a negative one slows the left wheel.
      */
     function driveStraight(dir: number): void {
+        let trim = dir > 0 ? steerTrimForward : steerTrimReverse;
         let left = 100;
         let right = 100;
-        if (steerTrim > 0) {
-            right = 100 - 2 * steerTrim;   // steer right: slow the right wheel
-        } else if (steerTrim < 0) {
-            left = 100 + 2 * steerTrim;    // steer left: slow the left wheel
+        if (trim > 0) {
+            right = 100 - 2 * trim;   // slow the right wheel
+        } else if (trim < 0) {
+            left = 100 + 2 * trim;    // slow the left wheel
         }
         setMotors(dir * left, dir * right);
     }
@@ -303,27 +321,43 @@ namespace roversa {
 
     /**
      * Correct drift so the robot drives in a straight line.
-     * Positive values curve the robot to the right, negative values to the left.
-     * It works by slowing the wheel on the inside of the curve.
-     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
+     * A positive value slows the right wheel, a negative value slows the left wheel.
+     * Roversa often needs a different correction going forward than in reverse, so you
+     * can set each one separately. With no direction chosen this sets both at once,
+     * which means a plain "set steer trim" placed after a forward- or reverse-only one
+     * will overwrite it.
+     * @param amount how much to correct, -50 to 50, eg: 0
+     * @param direction which way of driving this correction applies to
      */
     //% blockId=roversa_set_steer_trim
     //% group="Calibrate" weight=74
-    //% block="set steer trim to %amount"
+    //% block="set steer trim to %amount || for %direction"
     //% amount.min=-50 amount.max=50 amount.defl=0
-    export function setSteerTrim(amount: number): void {
-        steerTrim = clamp(amount, -50, 50);
+    //% direction.defl=RoversaDirection.Both
+    export function setSteerTrim(amount: number, direction: RoversaDirection = RoversaDirection.Both): void {
+        const trim = clamp(amount, -50, 50);
+        if (direction == RoversaDirection.Forward) {
+            steerTrimForward = trim;
+        } else if (direction == RoversaDirection.Reverse) {
+            steerTrimReverse = trim;
+        } else {
+            steerTrimForward = trim;
+            steerTrimReverse = trim;
+        }
     }
 
 
     /**
-     * The current steer trim, -50 (left) to 50 (right).
+     * The current steer trim, -50 to 50.
+     * Reports the forward correction unless you pick reverse.
+     * @param direction which way of driving to report, eg: RoversaDirection.Forward
      */
     //% blockId=roversa_get_steer_trim
     //% group="Calibrate" weight=73
-    //% block="steer trim"
-    export function steerTrimValue(): number {
-        return steerTrim;
+    //% block="steer trim || for %direction"
+    //% direction.defl=RoversaDirection.Forward
+    export function steerTrimValue(direction: RoversaDirection = RoversaDirection.Forward): number {
+        return direction == RoversaDirection.Reverse ? steerTrimReverse : steerTrimForward;
     }
 
     /**
@@ -336,6 +370,21 @@ namespace roversa {
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveForwardForMilliseconds(milliseconds: number): void {
         driveStraight(1);
+        basic.pause(milliseconds);
+        stop();
+    }
+
+    /**
+     * Test block: drive straight backwards for a number of milliseconds, then stop.
+     * Use this to check the reverse steer trim over a long straight run.
+     * @param milliseconds how long to drive, eg: 1000
+     */
+    //% blockId=roversa_drive_back_for_seconds
+    //% group="Test" weight=79
+    //% block="test: drive backward for %milliseconds|milliseconds"
+    //% milliseconds.min=0 milliseconds.defl=1000
+    export function driveBackwardForMilliseconds(milliseconds: number): void {
+        driveStraight(-1);
         basic.pause(milliseconds);
         stop();
     }
