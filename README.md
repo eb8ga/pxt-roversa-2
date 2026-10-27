@@ -85,7 +85,19 @@ roversa.steerTrimValue()
 
 > Tip: the steer trim is applied while driving straight, so set your steer trim first. Otherwise Roversa curves during the distance test and the number will be off.
 
-**Distance** — one mat square is 150 mm. Run the test, changing the milliseconds until Roversa travels exactly one square, then store that time.
+**Step size** — "drive forward one step" and "drive backward one step" move one step. A step is 150 mm by default, which is one square on the Roversa mat. If your mat has a different square size, set the step size once in `on start` and every step block follows it.
+
+```block
+roversa.setStepSize(150)
+```
+*Sets how far one step is, in millimeters.*
+
+```block
+roversa.stepSizeValue()
+```
+*Reports the current step size so you can read it in Blocks.*
+
+**Distance** — run the test, changing the milliseconds until Roversa travels exactly one step (one square on your mat), then store that time.
 
 ```block
 roversa.driveForwardForMilliseconds(1000)
@@ -100,7 +112,12 @@ roversa.driveBackwardForMilliseconds(1000)
 ```block
 roversa.setMovementTime(1250)
 ```
-*Stores how many milliseconds it takes to move one square (150 mm). This tunes the drive-distance blocks.*
+*Stores how many milliseconds it takes to move one step. This tunes the step blocks and the drive-distance blocks.*
+
+```block
+roversa.setMovementTime(1250, 200)
+```
+*Expand the block to give the step size at the same time. This example also sets the step size to 200 mm. Leave it collapsed to keep the step size you already set.*
 
 **Turning** — run the test, changing the milliseconds until Roversa spins exactly one full circle (360°), then store that time.
 
@@ -116,23 +133,23 @@ roversa.setTurnTime(2400)
 
 ### Servo
 
-Users can drive forward, backward, left and right turns which will only stop by calling the stop. Stop actually stops analog signal to ensure the robot fully stops regardless of bias. The nuetral position should pause the motors and keep them stationary and will depend on how your motors are trimmed.
+Users can drive forward or backward one step, and turn left or right 90 degrees. Each block stops on its own when the move is done. Stop actually stops analog signal to ensure the robot fully stops regardless of bias. The nuetral position should pause the motors and keep them stationary and will depend on how your motors are trimmed.
 ```block
 roversa.forward()
 ```
-*Drives forwards. Call stop to stop*
+*Drives forward one step (150 mm unless you set a different step size), then stops*
 ```block
 roversa.backward()
 ```
-*Drives backwards. Call stop to stop*
+*Drives backward one step (150 mm unless you set a different step size), then stops*
 ```block
 roversa.right()
 ```
-*Turns right. Call stop to stop*
+*Turns right 90 degrees, then stops*
 ```block
 roversa.left()
 ```
-*Turns left. Call stop to stop*
+*Turns left 90 degrees, then stops*
 
 Users can also select specific distances to drive the robot forward and backwards. This is also similar to selecting specific angles for turning. Be sure to use the calibration before using these last 4 functions to make sure your robot is going the correct distances and angles. In this example it is driving 10 mm or turning 90 degrees.
 
