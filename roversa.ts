@@ -50,7 +50,7 @@ enum RoversaDirection {
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="" block="Roversa"
-//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate', 'Test']"
+//% groups="['Buttons', 'Basic', 'Advanced', 'Steering calibration', 'Distance calibration', 'Turn calibration']"
 namespace roversa {
     /**
      * **********************************************************************************************************************************************
@@ -303,7 +303,7 @@ namespace roversa {
      * @param percent eg: 70
      */
     //% blockId=roversa_set_speed
-    //% group="Calibrate" weight=76
+    //% group="Steering calibration" weight=76
     //% block="set speed to %percent|\\%"
     //% percent.min=0 percent.max=100 percent.defl=70
     export function setSpeed(percent: number): void {
@@ -314,7 +314,7 @@ namespace roversa {
      * The current speed, as a percentage of full speed.
      */
     //% blockId=roversa_get_speed
-    //% group="Calibrate" weight=75
+    //% group="Steering calibration" weight=75
     //% block="speed (\\%)"
     export function speed(): number {
         return speedPercent;
@@ -331,7 +331,7 @@ namespace roversa {
      * @param direction which way of driving this correction applies to
      */
     //% blockId=roversa_set_steer_trim
-    //% group="Calibrate" weight=74
+    //% group="Steering calibration" weight=74
     //% block="set steer trim to %amount || for %direction"
     //% amount.min=-50 amount.max=50 amount.defl=0
     //% direction.defl=RoversaDirection.Both
@@ -354,7 +354,7 @@ namespace roversa {
      * @param direction which way of driving to report, eg: RoversaDirection.Forward
      */
     //% blockId=roversa_get_steer_trim
-    //% group="Calibrate" weight=73
+    //% group="Steering calibration" weight=73
     //% block="steer trim || for %direction"
     //% direction.defl=RoversaDirection.Forward
     export function steerTrimValue(direction: RoversaDirection = RoversaDirection.Forward): number {
@@ -366,7 +366,7 @@ namespace roversa {
      * @param milliseconds how long to drive, eg: 1000
      */
     //% blockId=roversa_drive_for_seconds
-    //% group="Test" weight=80
+    //% group="Distance calibration" weight=70
     //% block="test: drive forward for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveForwardForMilliseconds(milliseconds: number): void {
@@ -381,7 +381,7 @@ namespace roversa {
      * @param milliseconds how long to drive, eg: 1000
      */
     //% blockId=roversa_drive_back_for_seconds
-    //% group="Test" weight=79
+    //% group="Distance calibration" weight=69
     //% block="test: drive backward for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveBackwardForMilliseconds(milliseconds: number): void {
@@ -392,11 +392,12 @@ namespace roversa {
 
     /**
      * Allows the setting of roversa forward / backward distance.
-     * This allows tuning for the move x distance commands
+     * This allows tuning for the move x distance commands.
+     * Deprecated: use "calibrate ms needed to move one step" instead.
      * @param distPerSec : How many mm per second the robot does.
      */
     //% blockId=roversa_set_movement_speed_param
-    //% group="Calibrate" weight=71
+    //% group="Distance calibration" weight=60 deprecated=true
     //% block="calibrate drive amount to %distPerSec|mm per second"
     export function setDistancePerSecond(distPerSec: number): void {
         distancePerSec = distPerSec
@@ -409,7 +410,7 @@ namespace roversa {
      * @param mm the length of one step in millimeters, eg: 150
      */
     //% blockId=roversa_set_step_size
-    //% group="Calibrate" weight=72
+    //% group="Distance calibration" weight=72
     //% block="set step size to %mm|mm"
     //% mm.min=1 mm.defl=150
     export function setStepSize(mm: number): void {
@@ -420,7 +421,7 @@ namespace roversa {
      * The current step size, in millimeters.
      */
     //% blockId=roversa_get_step_size
-    //% group="Calibrate" weight=72
+    //% group="Distance calibration" weight=71
     //% block="step size (mm)"
     export function stepSizeValue(): number {
         return stepSize;
@@ -433,7 +434,7 @@ namespace roversa {
      * @param step : The step size in millimeters. Also sets the step size. Leave it out to keep the current step size.
      */
     //% blockId=roversa_set_movement_time_param
-    //% group="Calibrate" weight=71
+    //% group="Distance calibration" weight=68
     //% block="calibrate %milliseconds|ms needed to move one step || of %step|mm"
     //% milliseconds.min=1 milliseconds.defl=1000
     //% step.min=1 step.defl=150
@@ -452,7 +453,7 @@ namespace roversa {
      * @param milliseconds how long to turn, eg: 1000
      */
     //% blockId=roversa_turn_for_seconds
-    //% group="Test" weight=90
+    //% group="Turn calibration" weight=67
     //% block="test: turn right for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function turnRightForMilliseconds(milliseconds: number): void {
@@ -467,7 +468,7 @@ namespace roversa {
      * @param milliseconds : How many milliseconds it takes to turn 360 degrees.
      */
     //% blockId=roversa_set_turn_time_param
-    //% group="Calibrate" weight=69
+    //% group="Turn calibration" weight=66
     //% block="calibrate %milliseconds|ms needed for a full turn"
     //% milliseconds.min=1 milliseconds.defl=2000
     export function setTurnTime(milliseconds: number): void {

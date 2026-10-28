@@ -39,7 +39,8 @@
   "{id:group}Buttons": "Botones",
   "{id:group}Basic": "Básico",
   "{id:group}Advanced": "Avanzado",
-  "{id:group}Calibrate": "Calibrar",
-  "{id:group}Test": "Prueba",
+  "{id:group}Steering calibration": "Calibrar dirección",
+  "{id:group}Distance calibration": "Calibrar distancia",
+  "{id:group}Turn calibration": "Calibrar giro",
   "{id:category}roversa": "roversa"
 }
