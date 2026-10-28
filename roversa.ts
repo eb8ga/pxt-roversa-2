@@ -11,7 +11,7 @@ enum RoversaPin {
     P9 = DAL.MICROBIT_ID_IO_P9,
     //% block="Forward"
     P13 = DAL.MICROBIT_ID_IO_P13,
-    //% block="Reverse"
+    //% block="Backward"
     P14 = DAL.MICROBIT_ID_IO_P14,
     //% block="Right Turn"
     P15 = DAL.MICROBIT_ID_IO_P15,
@@ -33,10 +33,24 @@ enum RoversaEvent {
 }
 
 /**
+ * Which driving direction a steer trim applies to.
+ * Roversa is not symmetrical, so forward and backward need different corrections.
+ */
+//%
+enum RoversaDirection {
+    //% block="forward"
+    Forward,
+    //% block="backward"
+    Backward,
+    //% block="both"
+    Both,
+}
+
+/**
  * Blocks for driving the Roversa robot
  */
 //% weight=100 color=#d55e00 icon="" block="Roversa"
-//% groups="['Buttons', 'Basic', 'Advanced', 'Calibrate', 'Test']"
+//% groups="['Buttons', 'Basic', 'Advanced', 'Steering calibration', 'Distance calibration', 'Turn calibration']"
 namespace roversa {
     /**
      * **********************************************************************************************************************************************
@@ -45,17 +59,29 @@ namespace roversa {
 
     /* Some parameters used for controlling the turn and length of the roversa robot */
     const milliSecInASecond = 1000
-    let distancePerSec = 100
     let numberOfDegreesPerSec = 200
+    /* Distance in mm that "drive forward" and "drive backward" move. 150 matches one square on the Roversa mat. */
+    let stepSize = 150
+    /* Calibrated time to drive one step. Stored as a time rather than a speed so that
+       "set step size" and "calibrate ms needed to move one step" work in either order. */
+    let msPerStep = 1500
+
+    /* How long to drive to cover mm, scaled from the time for one step. */
+    function msForDistance(mm: number): number {
+        return (mm * msPerStep) / stepSize;
+    }
 
     /* Continuous-rotation servos: 90 is stopped, full speed is +/-90 from neutral.
        speedPercent caps movement at a percentage of full speed for reliable motion on cheap motors. */
     let speedPercent = 80
 
     /* Steer trim to correct drift. Range -50..50.
-       Positive curves the robot to the right, negative to the left.
-       It works by slowing the wheel on the inside of the curve. */
-    let steerTrim = 0
+       Positive slows the right wheel, negative slows the left wheel.
+       Roversa is not symmetrical (the caster trails when pushed but wanders when pulled,
+       and the servos rarely match in both rotation directions), so forward and backward
+       keep their own correction. */
+    let steerTrimForward = 0
+    let steerTrimBackward = 0
 
     function clamp(value: number, low: number, high: number): number {
         if (value < low) return low;
@@ -65,7 +91,7 @@ namespace roversa {
 
     /**
      * The single point where the servos are driven.
-     * left / right are signed wheel speeds from -100 (full reverse) to 100 (full forward).
+     * left / right are signed wheel speeds from -100 (full backward) to 100 (full forward).
      * The motors are mirrored, so forward is 90+ on P1 and 90- on P2.
      * speedPercent caps the top speed of both wheels together.
      */
@@ -80,17 +106,18 @@ namespace roversa {
     }
 
     /**
-     * Drive both wheels in a straight line, applying the steer trim.
+     * Drive both wheels in a straight line, applying the steer trim for that direction.
      * dir is 1 for forwards, -1 for backwards.
-     * A positive steerTrim slows the right wheel, a negative one slows the left wheel.
+     * A positive trim slows the right wheel, a negative one slows the left wheel.
      */
     function driveStraight(dir: number): void {
+        let trim = dir > 0 ? steerTrimForward : steerTrimBackward;
         let left = 100;
         let right = 100;
-        if (steerTrim > 0) {
-            right = 100 - 2 * steerTrim;   // steer right: slow the right wheel
-        } else if (steerTrim < 0) {
-            left = 100 + 2 * steerTrim;    // steer left: slow the left wheel
+        if (trim > 0) {
+            right = 100 - 2 * trim;   // slow the right wheel
+        } else if (trim < 0) {
+            left = 100 + 2 * trim;    // slow the left wheel
         }
         setMotors(dir * left, dir * right);
     }
@@ -145,32 +172,29 @@ namespace roversa {
     }
 
     /**
-     * Drives forward one square (150mm) and then stops.
+     * Drives forward one step and then stops.
+     * The step size is 150mm (one square on the Roversa mat) unless changed with "set step size".
      */
     //% blockId=roversa_servos_forward
     //% group="Basic" weight=87
     //% block="drive forward"
     export function forward(): void {
         driveStraight(1);
-         //Default 150mm square on our mats
-        let timeToWait = (150 * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
-        basic.pause(timeToWait);
+        basic.pause(msPerStep);
         stop();
     }
 
     /**
-     * Drives backwards. Call stop to stop
+     * Drives backward one step and then stops.
+     * The step size is 150mm (one square on the Roversa mat) unless changed with "set step size".
      */
     //% blockId=roversa_servos_backward
     //% group="Basic" weight=86
     //% block="drive backward"
     export function backward(): void {
         driveStraight(-1);
-        //Default 150mm square on our mats
-        let timeToWait = (150 * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
-        basic.pause(timeToWait);
+        basic.pause(msPerStep);
         stop();
-        basic.pause(500);
     }
 
     /**
@@ -209,7 +233,7 @@ namespace roversa {
     //% group="Advanced" weight=81
     //% block="drive forwards %howFar|mm"
     export function driveForwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        let timeToWait = msForDistance(howFar);
         driveStraight(1);
         basic.pause(timeToWait);
         stop();
@@ -223,7 +247,7 @@ namespace roversa {
     //% group="Advanced" weight=80
     //% block="drive backwards %howFar|mm"
     export function driveBackwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        let timeToWait = msForDistance(howFar);
         driveStraight(-1);
         basic.pause(timeToWait);
         stop();
@@ -284,7 +308,7 @@ namespace roversa {
      * @param percent eg: 70
      */
     //% blockId=roversa_set_speed
-    //% group="Calibrate" weight=76
+    //% group="Steering calibration" weight=76
     //% block="set speed to %percent|\\%"
     //% percent.min=0 percent.max=100 percent.defl=70
     export function setSpeed(percent: number): void {
@@ -295,7 +319,7 @@ namespace roversa {
      * The current speed, as a percentage of full speed.
      */
     //% blockId=roversa_get_speed
-    //% group="Calibrate" weight=75
+    //% group="Steering calibration" weight=75
     //% block="speed (\\%)"
     export function speed(): number {
         return speedPercent;
@@ -303,27 +327,43 @@ namespace roversa {
 
     /**
      * Correct drift so the robot drives in a straight line.
-     * Positive values curve the robot to the right, negative values to the left.
-     * It works by slowing the wheel on the inside of the curve.
-     * @param amount how much to steer, -50 (left) to 50 (right), eg: 0
+     * A positive value slows the right wheel, a negative value slows the left wheel.
+     * Roversa often needs a different correction going forward than when going backward, so you
+     * can set each one separately. With no direction chosen this sets both at once,
+     * which means a plain "set steer trim" placed after a forward- or backward-only one
+     * will overwrite it.
+     * @param amount how much to correct, -50 to 50, eg: 0
+     * @param direction which way of driving this correction applies to
      */
     //% blockId=roversa_set_steer_trim
-    //% group="Calibrate" weight=74
-    //% block="set steer trim to %amount"
+    //% group="Steering calibration" weight=74
+    //% block="set steer trim to %amount || for %direction"
     //% amount.min=-50 amount.max=50 amount.defl=0
-    export function setSteerTrim(amount: number): void {
-        steerTrim = clamp(amount, -50, 50);
+    //% direction.defl=RoversaDirection.Both
+    export function setSteerTrim(amount: number, direction: RoversaDirection = RoversaDirection.Both): void {
+        const trim = clamp(amount, -50, 50);
+        if (direction == RoversaDirection.Forward) {
+            steerTrimForward = trim;
+        } else if (direction == RoversaDirection.Backward) {
+            steerTrimBackward = trim;
+        } else {
+            steerTrimForward = trim;
+            steerTrimBackward = trim;
+        }
     }
 
 
     /**
-     * The current steer trim, -50 (left) to 50 (right).
+     * The current steer trim, -50 to 50.
+     * Reports the forward correction unless you pick backward.
+     * @param direction which way of driving to report, eg: RoversaDirection.Forward
      */
     //% blockId=roversa_get_steer_trim
-    //% group="Calibrate" weight=73
-    //% block="steer trim"
-    export function steerTrimValue(): number {
-        return steerTrim;
+    //% group="Steering calibration" weight=73
+    //% block="steer trim || for %direction"
+    //% direction.defl=RoversaDirection.Forward
+    export function steerTrimValue(direction: RoversaDirection = RoversaDirection.Forward): number {
+        return direction == RoversaDirection.Backward ? steerTrimBackward : steerTrimForward;
     }
 
     /**
@@ -331,8 +371,8 @@ namespace roversa {
      * @param milliseconds how long to drive, eg: 1000
      */
     //% blockId=roversa_drive_for_seconds
-    //% group="Test" weight=80
-    //% block="test: drive forward for %milliseconds|milliseconds"
+    //% group="Distance calibration" weight=70
+    //% block="test: drive forward for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveForwardForMilliseconds(milliseconds: number): void {
         driveStraight(1);
@@ -341,39 +381,79 @@ namespace roversa {
     }
 
     /**
-     * Allows the setting of roversa forward / reverse distance.
-     * This allows tuning for the move x distance commands
-     * @param distPerSec : How many mm per second the robot does.
+     * Test block: drive straight backwards for a number of milliseconds, then stop.
+     * Use this to check the backward steer trim over a long straight run.
+     * @param milliseconds how long to drive, eg: 1000
      */
-    //% blockId=roversa_set_movement_speed_param
-    //% group="Calibrate" weight=71
-    //% block="calibrate drive amount to %distPerSec|mm per second"
-    export function setDistancePerSecond(distPerSec: number): void {
-        distancePerSec = distPerSec
+    //% blockId=roversa_drive_back_for_seconds
+    //% group="Distance calibration" weight=69
+    //% block="test: drive backward for %milliseconds|ms"
+    //% milliseconds.min=0 milliseconds.defl=1000
+    export function driveBackwardForMilliseconds(milliseconds: number): void {
+        driveStraight(-1);
+        basic.pause(milliseconds);
+        stop();
     }
 
     /**
-     * Allows the setting of roversa forward / reverse distance.
-     * This allows tuning the time it takes to move a certain distance.
-     * @param milliseconds : How many milliseconds it takes to move one square (150mm) on the mat.
+     * Allows the setting of roversa forward / backward distance.
+     * This allows tuning for the move x distance commands.
+     * Deprecated: use "calibrate ms needed to move one step" instead.
+     * @param distPerSec : How many mm per second the robot does.
+     */
+    //% blockId=roversa_set_movement_speed_param
+    //% group="Distance calibration" weight=60 deprecated=true
+    //% block="calibrate drive amount to %distPerSec|mm per second"
+    export function setDistancePerSecond(distPerSec: number): void {
+        msPerStep = stepSize * milliSecInASecond / Math.max(1, distPerSec)
+    }
+
+    /**
+     * Set how far one step is, in millimeters.
+     * "drive forward" and "drive backward" move this far.
+     * The default is 150mm, one square on the Roversa mat. Change it to match your own mat.
+     * @param mm the length of one step in millimeters, eg: 150
+     */
+    //% blockId=roversa_set_step_size
+    //% group="Distance calibration" weight=72
+    //% block="set step size to %mm|mm"
+    //% mm.min=1 mm.defl=150
+    export function setStepSize(mm: number): void {
+        stepSize = Math.max(1, mm);
+    }
+
+    /**
+     * The current step size, in millimeters.
+     */
+    //% blockId=roversa_get_step_size
+    //% group="Distance calibration" weight=71
+    //% block="step size (mm)"
+    export function stepSizeValue(): number {
+        return stepSize;
+    }
+
+    /**
+     * Allows the setting of roversa forward / backward distance.
+     * This allows tuning the time it takes to move one step.
+     * @param milliseconds : How many milliseconds it takes to move one step.
      */
     //% blockId=roversa_set_movement_time_param
-    //% group="Calibrate" weight=71
-    //% block="calibrate %milliseconds|milliseconds needed to move one square"
+    //% group="Distance calibration" weight=68
+    //% block="calibrate %milliseconds|ms needed to move one step"
     //% milliseconds.min=1 milliseconds.defl=1000
     export function setMovementTime(milliseconds: number): void {
-        distancePerSec = 150 * milliSecInASecond / Math.max(1, milliseconds)
+        msPerStep = Math.max(1, milliseconds)
     }
 
     /**
      * Test block: spin right on the spot for a number of milliseconds, then stop.
      * Use this to calibrate turning: run it, modify the milliseconds until it turns 360 degrees,
-     * (or you see a full turn), write down the milliseconds, then feed into "calibrate full turn duration".
+     * (or you see a full turn), write down the milliseconds, then feed into "calibrate ms needed for a full turn".
      * @param milliseconds how long to turn, eg: 1000
      */
     //% blockId=roversa_turn_for_seconds
-    //% group="Test" weight=90
-    //% block="test: turn right for %milliseconds|milliseconds"
+    //% group="Turn calibration" weight=67
+    //% block="test: turn right for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function turnRightForMilliseconds(milliseconds: number): void {
         spin(1);
@@ -387,7 +467,7 @@ namespace roversa {
      * @param milliseconds : How many milliseconds it takes to turn 360 degrees.
      */
     //% blockId=roversa_set_turn_time_param
-    //% group="Calibrate" weight=69
+    //% group="Turn calibration" weight=66
     //% block="calibrate %milliseconds|ms needed for a full turn"
     //% milliseconds.min=1 milliseconds.defl=2000
     export function setTurnTime(milliseconds: number): void {

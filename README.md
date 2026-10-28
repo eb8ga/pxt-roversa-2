@@ -16,7 +16,7 @@ Pins are matched to the following micro:bit inputs:
 
 ```P13``` = Forward
 
-```P14``` = Reverse
+```P14``` = Backward
 
 ```P15``` = Right
 
@@ -39,9 +39,11 @@ roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
 *Registers code to run when a Roversa event is detected.*
 
 ### Calibrate
+Calibration is split into three groups, one for each thing Roversa needs to know. Work through them in order: steering first, then distance, then turning. Each group has the blocks that store a setting, and the test blocks you use to find the right value. No maths required — the extension does the conversion for you.
 
-#### Speed
-All movement runs at a percentage of full speed. Lower values give more reliable motion on cheaper motors. This one cap applies to driving and turning alike.
+#### Steering calibration
+
+**Speed** — all movement runs at a percentage of full speed. Lower values give more reliable motion on cheaper motors. This one cap applies to driving and turning alike, so set it before you calibrate anything else.
 
 ```block
 roversa.setSpeed(70)
@@ -53,25 +55,50 @@ roversa.speed()
 ```
 *Reports the current speed percentage, so you can read it in Blocks.*
 
-#### Steer trim (drift correction)
-If Roversa curves instead of driving straight, use the steer trim to nudge it back. A positive value curves the robot to the right, a negative value to the left. It works by slowing the wheel on the inside of the curve, and it is applied automatically by every forward / backward / drive-distance block.
+**Steer trim (drift correction)** — if Roversa curves instead of driving straight, use the steer trim to nudge it back. A positive value slows the right wheel, a negative value slows the left wheel. It is applied automatically by every forward / backward / drive-distance block.
+
+Roversa is not symmetrical — the caster wheel trails when pushed but wanders when pulled, and continuous-rotation servos rarely behave the same in both rotation directions — so **forward and backward each keep their own correction**. Calibrate them separately. The drive test blocks in [Distance calibration](#distance-calibration) are handy for checking the trim over a long straight run.
 
 ```block
 roversa.setSteerTrim(0)
 ```
-*Correct drift. -50 (left) to 50 (right).*
+*Correct drift, -50 to 50. With no direction chosen this sets forward and backward together.*
+
+```block
+roversa.setSteerTrim(10, RoversaDirection.Forward)
+```
+*Correct drift going forward only.*
+
+```block
+roversa.setSteerTrim(-5, RoversaDirection.Backward)
+```
+*Correct drift going backward only.*
+
+> Order matters: a plain `set steer trim` sets **both** directions, so placing one *after* a forward- or backward-only block will overwrite it. Set the shared value first, then the per-direction ones.
 
 ```block
 roversa.steerTrimValue()
 ```
-*Reports the current steer trim, so you can read it in Blocks.*
+*Reports the current steer trim so you can read it in Blocks. Reports the forward value unless you pick backward.*
 
-#### Calibrating distance and turning
-`drive forwards` a set distance and `turn` a set number of degrees only work once Roversa knows how long its motors need. You calibrate by running a **test** block, adjusting the milliseconds until Roversa produces a known result, then saving that time. No maths required — the extension does the conversion for you.
+#### Distance calibration
+The step blocks and `drive forwards` a set distance only work once Roversa knows how long its motors take to move one step. Run a test block, adjust the milliseconds until Roversa travels exactly one step, then store that time.
 
 > Tip: the steer trim is applied while driving straight, so set your steer trim first. Otherwise Roversa curves during the distance test and the number will be off.
 
-**Distance** — one mat square is 150 mm. Run the test, changing the milliseconds until Roversa travels exactly one square, then store that time.
+**Step size** — "drive forward" and "drive backward" move one step. A step is 150 mm by default, which is one square on the Roversa mat. If your mat has a different square size, set the step size once in `on start` and every step block follows it.
+
+```block
+roversa.setStepSize(150)
+```
+*Sets how far one step is, in millimeters.*
+
+```block
+roversa.stepSizeValue()
+```
+*Reports the current step size so you can read it in Blocks.*
+
+**Testing** — run the test, changing the milliseconds until Roversa travels exactly one step (one square on your mat).
 
 ```block
 roversa.driveForwardForMilliseconds(1000)
@@ -79,11 +106,19 @@ roversa.driveForwardForMilliseconds(1000)
 *Test: drive straight forward for the given milliseconds, then stop.*
 
 ```block
+roversa.driveBackwardForMilliseconds(1000)
+```
+*Test: drive straight backward for the given milliseconds, then stop. Also useful for checking the backward steer trim over a long run.*
+
+**Storing the time**
+
+```block
 roversa.setMovementTime(1250)
 ```
-*Stores how many milliseconds it takes to move one square (150 mm). This tunes the drive-distance blocks.*
+*Stores how many milliseconds it takes to move one step. This tunes the step blocks and the drive-distance blocks. You can set the step size before or after this block.*
 
-**Turning** — run the test, changing the milliseconds until Roversa spins exactly one full circle (360°), then store that time.
+#### Turn calibration
+`turn` a set number of degrees only works once Roversa knows how long it takes to spin. Run the test, changing the milliseconds until Roversa spins exactly one full circle (360°), then store that time.
 
 ```block
 roversa.turnRightForMilliseconds(2400)
@@ -93,27 +128,26 @@ roversa.turnRightForMilliseconds(2400)
 ```block
 roversa.setTurnTime(2400)
 ```
-*Stores how many milliseconds it takes to spin a full 360° turn. This tunes the turn-degrees blocks.*
-
+*Stores how many milliseconds it takes to spin a full 360° turn. This tunes the turn blocks.*
 ### Servo
 
-Users can drive forward, backward, left and right turns which will only stop by calling the stop. Stop actually stops analog signal to ensure the robot fully stops regardless of bias. The nuetral position should pause the motors and keep them stationary and will depend on how your motors are trimmed.
+Users can drive forward or backward one step, and turn left or right 90 degrees. Each block stops on its own when the move is done. Stop actually stops analog signal to ensure the robot fully stops regardless of bias. The nuetral position should pause the motors and keep them stationary and will depend on how your motors are trimmed.
 ```block
 roversa.forward()
 ```
-*Drives forwards. Call stop to stop*
+*Drives forward one step (150 mm unless you set a different step size), then stops*
 ```block
 roversa.backward()
 ```
-*Drives backwards. Call stop to stop*
+*Drives backward one step (150 mm unless you set a different step size), then stops*
 ```block
 roversa.right()
 ```
-*Turns right. Call stop to stop*
+*Turns right 90 degrees, then stops*
 ```block
 roversa.left()
 ```
-*Turns left. Call stop to stop*
+*Turns left 90 degrees, then stops*
 
 Users can also select specific distances to drive the robot forward and backwards. This is also similar to selecting specific angles for turning. Be sure to use the calibration before using these last 4 functions to make sure your robot is going the correct distances and angles. In this example it is driving 10 mm or turning 90 degrees.
 

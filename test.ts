@@ -73,7 +73,7 @@ basic.forever(() => {
     if (roversa.isPressed(RoversaPin.P13))
         basic.showString("P13 - Forward");
     if (roversa.isPressed(RoversaPin.P14))
-        basic.showString("P14 - Reverse");
+        basic.showString("P14 - Backward");
     if (roversa.isPressed(RoversaPin.P15))
         basic.showString("P15 - Right");
     if (roversa.isPressed(RoversaPin.P16))
