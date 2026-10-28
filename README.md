@@ -86,7 +86,7 @@ The step blocks and `drive forwards` a set distance only work once Roversa knows
 
 > Tip: the steer trim is applied while driving straight, so set your steer trim first. Otherwise Roversa curves during the distance test and the number will be off.
 
-**Step size** — "drive forward one step" and "drive backward one step" move one step. A step is 150 mm by default, which is one square on the Roversa mat. If your mat has a different square size, set the step size once in `on start` and every step block follows it.
+**Step size** — "drive forward" and "drive backward" move one step. A step is 150 mm by default, which is one square on the Roversa mat. If your mat has a different square size, set the step size once in `on start` and every step block follows it.
 
 ```block
 roversa.setStepSize(150)
@@ -115,12 +115,7 @@ roversa.driveBackwardForMilliseconds(1000)
 ```block
 roversa.setMovementTime(1250)
 ```
-*Stores how many milliseconds it takes to move one step. This tunes the step blocks and the drive-distance blocks.*
-
-```block
-roversa.setMovementTime(1250, 200)
-```
-*Expand the block to give the step size at the same time. This example also sets the step size to 200 mm. Leave it collapsed to keep the step size you already set.*
+*Stores how many milliseconds it takes to move one step. This tunes the step blocks and the drive-distance blocks. You can set the step size before or after this block.*
 
 #### Turn calibration
 `turn` a set number of degrees only works once Roversa knows how long it takes to spin. Run the test, changing the milliseconds until Roversa spins exactly one full circle (360°), then store that time.

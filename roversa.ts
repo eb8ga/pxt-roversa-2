@@ -59,10 +59,17 @@ namespace roversa {
 
     /* Some parameters used for controlling the turn and length of the roversa robot */
     const milliSecInASecond = 1000
-    let distancePerSec = 100
     let numberOfDegreesPerSec = 200
-    /* Distance in mm that "drive forward/backward one step" moves. 150 matches one square on the Roversa mat. */
+    /* Distance in mm that "drive forward" and "drive backward" move. 150 matches one square on the Roversa mat. */
     let stepSize = 150
+    /* Calibrated time to drive one step. Stored as a time rather than a speed so that
+       "set step size" and "calibrate ms needed to move one step" work in either order. */
+    let msPerStep = 1500
+
+    /* How long to drive to cover mm, scaled from the time for one step. */
+    function msForDistance(mm: number): number {
+        return (mm * msPerStep) / stepSize;
+    }
 
     /* Continuous-rotation servos: 90 is stopped, full speed is +/-90 from neutral.
        speedPercent caps movement at a percentage of full speed for reliable motion on cheap motors. */
@@ -173,8 +180,7 @@ namespace roversa {
     //% block="drive forward"
     export function forward(): void {
         driveStraight(1);
-        let timeToWait = (stepSize * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
-        basic.pause(timeToWait);
+        basic.pause(msPerStep);
         stop();
     }
 
@@ -187,8 +193,7 @@ namespace roversa {
     //% block="drive backward"
     export function backward(): void {
         driveStraight(-1);
-        let timeToWait = (stepSize * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
-        basic.pause(timeToWait);
+        basic.pause(msPerStep);
         stop();
     }
 
@@ -228,7 +233,7 @@ namespace roversa {
     //% group="Advanced" weight=81
     //% block="drive forwards %howFar|mm"
     export function driveForwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        let timeToWait = msForDistance(howFar);
         driveStraight(1);
         basic.pause(timeToWait);
         stop();
@@ -242,7 +247,7 @@ namespace roversa {
     //% group="Advanced" weight=80
     //% block="drive backwards %howFar|mm"
     export function driveBackwards(howFar: number): void {
-        let timeToWait = (howFar * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
+        let timeToWait = msForDistance(howFar);
         driveStraight(-1);
         basic.pause(timeToWait);
         stop();
@@ -400,12 +405,12 @@ namespace roversa {
     //% group="Distance calibration" weight=60 deprecated=true
     //% block="calibrate drive amount to %distPerSec|mm per second"
     export function setDistancePerSecond(distPerSec: number): void {
-        distancePerSec = distPerSec
+        msPerStep = stepSize * milliSecInASecond / Math.max(1, distPerSec)
     }
 
     /**
      * Set how far one step is, in millimeters.
-     * "drive forward one step" and "drive backward one step" move this far.
+     * "drive forward" and "drive backward" move this far.
      * The default is 150mm, one square on the Roversa mat. Change it to match your own mat.
      * @param mm the length of one step in millimeters, eg: 150
      */
@@ -431,19 +436,13 @@ namespace roversa {
      * Allows the setting of roversa forward / backward distance.
      * This allows tuning the time it takes to move one step.
      * @param milliseconds : How many milliseconds it takes to move one step.
-     * @param step : The step size in millimeters. Also sets the step size. Leave it out to keep the current step size.
      */
     //% blockId=roversa_set_movement_time_param
     //% group="Distance calibration" weight=68
-    //% block="calibrate %milliseconds|ms needed to move one step || of %step|mm"
+    //% block="calibrate %milliseconds|ms needed to move one step"
     //% milliseconds.min=1 milliseconds.defl=1000
-    //% step.min=1 step.defl=150
-    export function setMovementTime(milliseconds: number, step: number = 0): void {
-        // 0 means "not given", so a collapsed block keeps any step size set earlier
-        if (step > 0) {
-            setStepSize(step);
-        }
-        distancePerSec = stepSize * milliSecInASecond / Math.max(1, milliseconds)
+    export function setMovementTime(milliseconds: number): void {
+        msPerStep = Math.max(1, milliseconds)
     }
 
     /**
