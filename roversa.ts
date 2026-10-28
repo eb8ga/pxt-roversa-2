@@ -367,7 +367,7 @@ namespace roversa {
      */
     //% blockId=roversa_drive_for_seconds
     //% group="Test" weight=80
-    //% block="test: drive forward for %milliseconds|milliseconds"
+    //% block="test: drive forward for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveForwardForMilliseconds(milliseconds: number): void {
         driveStraight(1);
@@ -382,7 +382,7 @@ namespace roversa {
      */
     //% blockId=roversa_drive_back_for_seconds
     //% group="Test" weight=79
-    //% block="test: drive backward for %milliseconds|milliseconds"
+    //% block="test: drive backward for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function driveBackwardForMilliseconds(milliseconds: number): void {
         driveStraight(-1);
@@ -434,7 +434,7 @@ namespace roversa {
      */
     //% blockId=roversa_set_movement_time_param
     //% group="Calibrate" weight=71
-    //% block="calibrate %milliseconds|milliseconds needed to move one step || of %step|mm"
+    //% block="calibrate %milliseconds|ms needed to move one step || of %step|mm"
     //% milliseconds.min=1 milliseconds.defl=1000
     //% step.min=1 step.defl=150
     export function setMovementTime(milliseconds: number, step: number = 0): void {
@@ -448,12 +448,12 @@ namespace roversa {
     /**
      * Test block: spin right on the spot for a number of milliseconds, then stop.
      * Use this to calibrate turning: run it, modify the milliseconds until it turns 360 degrees,
-     * (or you see a full turn), write down the milliseconds, then feed into "calibrate full turn duration".
+     * (or you see a full turn), write down the milliseconds, then feed into "calibrate ms needed for a full turn".
      * @param milliseconds how long to turn, eg: 1000
      */
     //% blockId=roversa_turn_for_seconds
     //% group="Test" weight=90
-    //% block="test: turn right for %milliseconds|milliseconds"
+    //% block="test: turn right for %milliseconds|ms"
     //% milliseconds.min=0 milliseconds.defl=1000
     export function turnRightForMilliseconds(milliseconds: number): void {
         spin(1);
