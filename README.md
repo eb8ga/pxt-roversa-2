@@ -16,7 +16,7 @@ Pins are matched to the following micro:bit inputs:
 
 ```P13``` = Forward
 
-```P14``` = Reverse
+```P14``` = Backward
 
 ```P15``` = Right
 
@@ -56,12 +56,12 @@ roversa.speed()
 #### Steer trim (drift correction)
 If Roversa curves instead of driving straight, use the steer trim to nudge it back. A positive value slows the right wheel, a negative value slows the left wheel. It is applied automatically by every forward / backward / drive-distance block.
 
-Roversa is not symmetrical — the caster wheel trails when pushed but wanders when pulled, and continuous-rotation servos rarely behave the same in both rotation directions — so **forward and reverse each keep their own correction**. Calibrate them separately.
+Roversa is not symmetrical — the caster wheel trails when pushed but wanders when pulled, and continuous-rotation servos rarely behave the same in both rotation directions — so **forward and backward each keep their own correction**. Calibrate them separately.
 
 ```block
 roversa.setSteerTrim(0)
 ```
-*Correct drift, -50 to 50. With no direction chosen this sets forward and reverse together.*
+*Correct drift, -50 to 50. With no direction chosen this sets forward and backward together.*
 
 ```block
 roversa.setSteerTrim(10, RoversaDirection.Forward)
@@ -69,16 +69,16 @@ roversa.setSteerTrim(10, RoversaDirection.Forward)
 *Correct drift going forward only.*
 
 ```block
-roversa.setSteerTrim(-5, RoversaDirection.Reverse)
+roversa.setSteerTrim(-5, RoversaDirection.Backward)
 ```
-*Correct drift in reverse only.*
+*Correct drift going backward only.*
 
-> Order matters: a plain `set steer trim` sets **both** directions, so placing one *after* a forward- or reverse-only block will overwrite it. Set the shared value first, then the per-direction ones.
+> Order matters: a plain `set steer trim` sets **both** directions, so placing one *after* a forward- or backward-only block will overwrite it. Set the shared value first, then the per-direction ones.
 
 ```block
 roversa.steerTrimValue()
 ```
-*Reports the current steer trim so you can read it in Blocks. Reports the forward value unless you pick reverse.*
+*Reports the current steer trim so you can read it in Blocks. Reports the forward value unless you pick backward.*
 
 #### Calibrating distance and turning
 `drive forwards` a set distance and `turn` a set number of degrees only work once Roversa knows how long its motors need. You calibrate by running a **test** block, adjusting the milliseconds until Roversa produces a known result, then saving that time. No maths required — the extension does the conversion for you.
@@ -107,7 +107,7 @@ roversa.driveForwardForMilliseconds(1000)
 ```block
 roversa.driveBackwardForMilliseconds(1000)
 ```
-*Test: drive straight backward for the given milliseconds, then stop. Useful for checking the reverse steer trim over a long run.*
+*Test: drive straight backward for the given milliseconds, then stop. Useful for checking the backward steer trim over a long run.*
 
 ```block
 roversa.setMovementTime(1250)
