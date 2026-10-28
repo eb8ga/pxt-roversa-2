@@ -170,7 +170,7 @@ namespace roversa {
      */
     //% blockId=roversa_servos_forward
     //% group="Basic" weight=87
-    //% block="drive forward one step"
+    //% block="drive forward"
     export function forward(): void {
         driveStraight(1);
         let timeToWait = (stepSize * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
@@ -184,7 +184,7 @@ namespace roversa {
      */
     //% blockId=roversa_servos_backward
     //% group="Basic" weight=86
-    //% block="drive backward one step"
+    //% block="drive backward"
     export function backward(): void {
         driveStraight(-1);
         let timeToWait = (stepSize * milliSecInASecond) / Math.max(1, distancePerSec); // calculation done this way round to avoid zero rounding
