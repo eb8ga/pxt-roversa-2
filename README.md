@@ -3,7 +3,7 @@ More info for Roversa can be found on [roversa.com](https://www.roversa.com) or 
 
 ## Roversa
 
-![roversa v2.1.1](https://github.com/eb8ga/roversa2/blob/main/github/pics/CADView.png?raw=true)
+![roversa v2.1.1](https://github.com/Roversa-Robotics/roversa2/blob/main/github/pics/CADView.png?raw=true)
 
 ### Buttons
 Pins are matched to the following micro:bit inputs:
@@ -167,6 +167,16 @@ roversa.turnRight(90)
 roversa.turnLeft(90)
 ```
 *Turns left through the requested degrees and then stops. Needs the full-turn calibration tuned to be accurate, as it uses a simple turn, wait, stop method.*
+
+## Testing
+
+The test suite lives in [test.ts](test.ts). It covers every block in the extension,
+split into five groups: one group of automatic checks on the calibration values, which
+runs on start and needs no hardware, and four manual groups that drive a real Roversa
+from the micro:bit buttons.
+
+How to run the tests, what each group should do, and the pass and fail criteria for
+each one are documented in the comment block at the top of `test.ts`.
 
 ## License
 
