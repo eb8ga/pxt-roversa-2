@@ -12,7 +12,7 @@ Pins are matched to the following micro:bit inputs:
 
 ```P5``` = Play
 
-```P9``` = Pause
+```P9``` = Stop
 
 ```P13``` = Forward
 
@@ -22,6 +22,12 @@ Pins are matched to the following micro:bit inputs:
 
 ```P16``` = Left
 
+Note that Play is on pin P5, which is the same pin the micro:bit's own button A uses.
+The two are one electrical line, so a press of either is seen by both: `isPressed` and
+`onEvent` on Play also fire when button A is pressed, and anything bound to button A
+also fires when Play is pressed. Pick a different micro:bit button if you need the two
+to stay apart.
+
 Roversa button `isPressed` allows users to select any of the 7 buttons mapped to the micro:bit on Roversa. Buttons include FWD, REV, LEFT, RIGHT, STOP, MENU, PLAY. Users can make these buttons do anything in Blocks and Javascript
 
 ```block
@@ -29,10 +35,10 @@ roversa.isPressed(RoversaPin.P5)
 ```
 *Determines if a button is pressed*
 
-Roversa button `onEvent` allows users to select any of the above buttons and create an event on the button *down*, *up*, or *click*. In the above example when you push the Menu button on Pin 5 the LED display the string "Hello".
+Roversa button `onEvent` allows users to select any of the above buttons and create an event on the button *down*, *up*, or *click*. In the above example when you push the Menu button on Pin 8 the LED display the string "Hello".
 
 ```blocks
-roversa.onEvent(RoversaPin.P5, RoversaEvent.Down, function() {
+roversa.onEvent(RoversaPin.P8, RoversaEvent.Down, function() {
     basic.showString("Hello!")
 })
 ```
