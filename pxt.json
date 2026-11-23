@@ -1,6 +1,6 @@
 {
     "name": "roversa",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "Deprecated - use roversa-robotics/pxt-roversa-2",
     "license": "MIT",
     "dependencies": {
