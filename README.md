@@ -1,4 +1,12 @@
 # Roversa PXT Extension for MakeCode
+
+> ### This extension is no longer maintained
+>
+> Roversa's MakeCode extension has moved to
+> **[roversa-robotics/pxt-roversa-2](https://makecode.microbit.org/pkg/roversa-robotics/pxt-roversa-2)**.
+> Please use that one — it is the version we keep improving, and the only one that
+> receives fixes. Its README has the steps for moving an existing project across.
+
 More info for Roversa can be found on [roversa.com](https://www.roversa.com) or on the [Roversa](https://www.globalcsed.org/tools.html) page at GlobalCSED.
 
 ## Roversa
