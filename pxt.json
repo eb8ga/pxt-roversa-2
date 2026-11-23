@@ -1,7 +1,7 @@
 {
     "name": "roversa",
     "version": "2.1.0",
-    "description": "Blocks to simplify using Roversa in PXT",
+    "description": "Deprecated - use roversa-robotics/pxt-roversa-2",
     "license": "MIT",
     "dependencies": {
         "core": "*"
